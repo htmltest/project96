@@ -1,0 +1,109 @@
+* {outline:none; box-sizing:border-box}
+
+@font-face {font-family:"ChevinPro"; src:url("../fonts/2B01C3_0_0.woff") format("woff"); font-weight:300; font-style:normal}
+@font-face {font-family:"ChevinPro"; src:url("../fonts/2B01C3_4_0.woff") format("woff"); font-weight:normal; font-style:normal}
+@font-face {font-family:"ChevinPro"; src:url("../fonts/2B01C3_3_0.woff") format("woff"); font-weight:600; font-style:normal}
+@font-face {font-family:"ChevinPro"; src:url("../fonts/2B01C3_2_0.woff") format("woff"); font-weight:700; font-style:normal}
+@font-face {font-family:"ChevinPro"; src:url("../fonts/2B01C3_1_0.woff") format("woff"); font-weight:900; font-style:normal}
+
+html {min-width:320px}
+
+body {min-width:320px; margin:0; padding:0; font:15px/20px ChevinPro, sans-serif; color:#5e5c5c; background:#fff; -webkit-text-size-adjust:100%}
+
+a {color:#5e5c5c}
+
+p {margin:20px 0; padding:0}
+
+.btn {display:inline-block; vertical-align:top; position:relative; border-radius:3px; background:#e50004; margin:0; padding:0 20px; outline:none; border:none; text-decoration:none; height:36px; box-sizing:border-box; color:#fff; text-align:center; font:600 15px/36px ChevinPro,sans-serif; -webkit-appearance:none; cursor:pointer}
+.btn:hover {background:#cd161c}
+.btn.disabled {cursor:default; background:#777}
+
+form {margin:20px 0; padding:0}
+
+.form-input {position:relative; margin:0 0 10px 0}
+.form-input.required:after {content:"*"; color:#e50004; display:block; right:10px; position:absolute; top:0; line-height:36px}
+.form-input.disabled {background:#f8f9f9; pointer-events:none}
+
+.form-input input,
+.form-input textarea {position:relative; z-index:1; border:1px solid #ccc; font:16px/20px ChevinPro, sans-serif; color:#1b1c20; vertical-align:top; margin:0; padding:6px 15px 8px 15px; width:100%; height:36px; box-sizing:border-box; outline:none; border-radius:2px; background:url(../images/blank.gif); -webkit-appearance:none}
+.form-input textarea {height:auto; resize:none; overflow:auto}
+.form-input input::-webkit-input-placeholder {opacity:.5}
+.form-input input::-moz-placeholder {opacity:.5}
+.form-input input:-ms-input-placeholder {opacity:.5}
+.form-input textarea::-webkit-input-placeholder {opacity:.5}
+.form-input textarea::-moz-placeholder {opacity:.5}
+.form-input textarea:-ms-input-placeholder {opacity:.5}
+.form-input input.error::-webkit-input-placeholder {opacity:0}
+.form-input input.error::-moz-placeholder {opacity:0}
+.form-input input.error:-ms-input-placeholder {opacity:0}
+.form-input textarea.error::-webkit-input-placeholder {opacity:0}
+.form-input textarea.error::-moz-placeholder {opacity:0}
+.form-input textarea.error:-ms-input-placeholder {opacity:0}
+.form-input input.error,
+.form-input textarea.error {border-color:#e50004}
+.form-input input:focus,
+.form-input textarea:focus {border-color:#777}
+.form-input input:focus+label.error,
+.form-input textarea:focus+label.error {display:none !important}
+.form-input input:focus::-webkit-input-placeholder {opacity:.5}
+.form-input input:focus::-moz-placeholder {opacity:.5}
+.form-input input:focus:-ms-input-placeholder {opacity:.5}
+.form-input textarea:focus::-webkit-input-placeholder {opacity:.5}
+.form-input textarea:focus::-moz-placeholder {opacity:.5}
+.form-input textarea:focus:-ms-input-placeholder {opacity:.5}
+.form-input label.error {position:absolute; left:16px; top:1px; color:#e50004; font-size:16px; line-height:34px}
+.form-input-list {position:absolute; left:0; top:100%; width:100%; background:#fff; z-index:99; box-shadow:0 4px 3px 0 rgba(27, 28, 32, .4); margin:0; padding:0; list-style:none; max-height:180px; overflow:auto}
+.form-input-list li {margin:0; padding:7px 16px 9px 16px; font-size:16px; line-height:20px; color:#1b1c20; cursor:pointer}
+.form-input-list li:hover {background:#ff7373}
+
+.form-submit {padding:10px 0 20px 0}
+
+::-ms-clear {display:none}
+
+.window-open {overflow:hidden}
+.window-open body {height:auto; overflow:hidden}
+
+.window {position:fixed; left:0; top:0; right:0; bottom:0; z-index:99997; overflow:auto; background:rgba(0, 0, 0, .8)}
+.window-loading {position:absolute; left:50%; top:50%; width:24px; height:24px; margin:-12px 0 0 -12px; background:url(../images/loading.gif)}
+.window-container {position:absolute; z-index:99999; left:50%; top:50%}
+.window-container-load {position:fixed; left:-9999px; top:-9999px}
+.window-content {position:relative; background:#fff; border-radius:5px}
+.window-close {position:absolute; top:6px; right:0; padding:0; cursor:pointer; transition:color .15s; color:#979797; border:none; background:none; font-size:0; width:48px; height:48px; -webkit-appearance:none; outline:none}
+.window-close svg{width:24px; height:24px; top:0; left:0; right:0; bottom:0; margin:auto}
+.window-close:hover svg path {fill:#cd161c}
+
+.window-callback {width:480px; padding:0 20px}
+.window-callback form {margin:0}
+
+.form-title {color:#1b1c20; font-weight:600; font-size:24px; line-height:31px; padding:16px 25px 20px 0}
+.form-tip {color:#777; padding:0 0 12px 0}
+
+.window-thanks {width:480px; padding:24px; text-align:center}
+.window-thanks .form-title {font-size:20px; line-height:26px; padding:0 0 13px 0}
+.window-thanks .form-tip {padding:0 0 20px 0}
+
+.form-details {background:#f8f9f9; border-radius:2px; padding:10px 16px 15px 16px; margin-bottom:16px; margin-top:15px}
+.form-details-title {margin:0 0 10px 0; font-weight:600; font-size:15px; line-height:19px; color:#000}
+.form-details-text {font-weight:600; font-size:15px; line-height:19px; color:#000}
+.form-details-list-row {color:#777; font-size:13px; line-height:18px; display:table; width:100%; margin-top:5px}
+.form-details-list-row-2 {margin-top:12px}
+.form-details-list-row-summ {margin-top:15px; color:#1b1c20}
+.form-details-prop {display:table-cell; vertical-align:top; width:160px}
+.form-details-value {display:table-cell; vertical-align:top; color:#1b1c20}
+.form-details-subvalue {float:right; clear:right; width:100px}
+
+.window-thanks-2 {width:480px; padding:12px 24px 24px 24px}
+.window-thanks-2 .form-title {padding-top:0}
+.window-thanks-2 .form-tip {padding:0 0 5px 0; color:#1b1c20}
+
+.address-box:after {content:"."; display:block; clear:both; visibility:hidden; height:0}
+.address-box-street {float:left; width:68%; padding:0 4px 0 0}
+.address-box-house {float:left; width:32%; padding:0 0 0 4px}
+
+.special-offer {display:block; color:#777; border-radius:2px; background:#d2ffd2; font-weight:500; font-size:15px; line-height:19px; cursor:pointer; position:relative; margin:8px 0 10px 0}
+.special-offer input {display:none}
+.special-offer-checkbox {display:block; position:absolute; top:11px; left:17px; border:1px solid #999; width:16px; height:16px; border-radius:2px; background:#f8f9f9}
+.special-offer-tic {display:none; position:absolute; left:50%; top:50%; margin:-4px 0 0 -6px; line-height:0}
+.special-offer input:checked+.special-offer-checkbox .special-offer-tic {display:block}
+.special-offer-text {display:block; position:relative; padding:8px 16px 8px 40px; border-radius:2px; border:1px solid transparent}
+.special-offer input:checked+.special-offer-checkbox+.special-offer-text {border-color:#009245; color:#009245}
