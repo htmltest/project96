@@ -54,7 +54,7 @@ form {margin:20px 0; padding:0}
 .form-input label.error {position:absolute; left:16px; top:1px; color:#e50004; font-size:16px; line-height:34px}
 .form-input-list {position:absolute; left:0; top:100%; width:100%; background:#fff; z-index:99; box-shadow:0 4px 3px 0 rgba(27, 28, 32, .4); margin:0; padding:0; list-style:none; max-height:180px; overflow:auto}
 .form-input-list li {margin:0; padding:7px 16px 9px 16px; font-size:16px; line-height:20px; color:#1b1c20; cursor:pointer}
-.form-input-list li:hover {background:#ff7373}
+.form-input-list li.active {background:#ff7373}
 
 .form-submit {padding:10px 0 20px 0}
 
