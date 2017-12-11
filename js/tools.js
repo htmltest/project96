@@ -15,10 +15,30 @@ $(document).ready(function() {
         if (curLink.data('title') == 'Y') {
             windowOpen(curLink.attr('href'), null, function() {
                 $('.window .form-details-text').html($('title').text());
+                if (typeof (curLink.data('inputs')) != 'undefined') {
+                    var obj = curLink.data('inputs');
+                    var newHTML = '';
+                    for (var i = 0; i < obj.inputs.length; i++) {
+                        var curName = obj.inputs[i].name;
+                        var curValue = obj.inputs[i].value;
+                        newHTML += '<input type="hidden" name="' + curName + '" value="' + curValue + '" />';
+                    }
+                    $('.window form').append(newHTML);
+                }
             });
         } else if (typeof (curLink.data('text')) != 'undefined') {
             windowOpen(curLink.attr('href'), null, function() {
                 $('.window .form-details-text').html(curLink.data('text'));
+                if (typeof (curLink.data('inputs')) != 'undefined') {
+                    var obj = curLink.data('inputs');
+                    var newHTML = '';
+                    for (var i = 0; i < obj.inputs.length; i++) {
+                        var curName = obj.inputs[i].name;
+                        var curValue = obj.inputs[i].value;
+                        newHTML += '<input type="hidden" name="' + curName + '" value="' + curValue + '" />';
+                    }
+                    $('.window form').append(newHTML);
+                }
             });
         } else if (typeof (curLink.data('tarif')) != 'undefined') {
             windowOpen(curLink.attr('href'), null, function() {
@@ -42,6 +62,17 @@ $(document).ready(function() {
                     newHTML += '</div>';
                 }
                 $('.window .form-details-list').html(newHTML);
+
+                if (typeof (curLink.data('inputs')) != 'undefined') {
+                    var obj = curLink.data('inputs');
+                    var newHTML = '';
+                    for (var i = 0; i < obj.inputs.length; i++) {
+                        var curName = obj.inputs[i].name;
+                        var curValue = obj.inputs[i].value;
+                        newHTML += '<input type="hidden" name="' + curName + '" value="' + curValue + '" />';
+                    }
+                    $('.window form').append(newHTML);
+                }
             });
         } else {
             windowOpen(curLink.attr('href'));
