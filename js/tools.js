@@ -39,11 +39,13 @@ $(document).ready(function() {
                         newHTML += '<div class="nd-form-details-list-row">';
                     }
                     newHTML += '<div class="nd-form-details-prop">' + curTitle + '</div>';
+                    newText += curTitle;
                     if (curValue != '') {
                         newHTML += '<div class="nd-form-details-value">' + curValue + '</div>';
+                        newText += ':' + curValue;
                     }
                     newHTML += '</div>';
-                    newText += curTitle + ':' + curValue + ';';
+                    newText += '\n';
                 }
                 $('.nd-window .nd-form-details-list').html(newHTML);
                 $('.nd-window form').append('<textarea name="details" style="display:none">' + newText + '</div>');
