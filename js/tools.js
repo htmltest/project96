@@ -10,7 +10,7 @@ $(document).ready(function() {
         'Неверный формат номера телефона'
     );
 
-    $('body').on('click', '.nd-window-link', function(e) {
+    $('body').on('click', '.window-link', function(e) {
         var curLink = $(this);
         if (curLink.data('title') == 'Y') {
             windowOpen(curLink.attr('href'), null, function() {
