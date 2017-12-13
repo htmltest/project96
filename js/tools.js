@@ -15,17 +15,18 @@ $(document).ready(function() {
         if (curLink.data('title') == 'Y') {
             windowOpen(curLink.attr('href'), null, function() {
                 $('.nd-window .nd-form-details-text').html($('title').text());
-                $('.nd-window form').append('<textarea name="details" style="display:none">' + $('.nd-window .nd-form-details').html() + '</div>');
+                $('.nd-window form').append('<textarea name="details" style="display:none">' + $('title').text() + '</div>');
             });
         } else if (typeof (curLink.data('text')) != 'undefined') {
             windowOpen(curLink.attr('href'), null, function() {
                 $('.nd-window .nd-form-details-text').html(curLink.data('text'));
-                $('.nd-window form').append('<textarea name="details" style="display:none">' + $('.nd-window .nd-form-details').html() + '</div>');
+                $('.nd-window form').append('<textarea name="details" style="display:none">' + curLink.data('text') + '</div>');
             });
         } else if (typeof (curLink.data('tarif')) != 'undefined') {
             windowOpen(curLink.attr('href'), null, function() {
                 var obj = curLink.data('tarif');
                 var newHTML = '';
+                var newText = '';
                 for (var i = 0; i < obj.rows.length; i++) {
                     var curType = obj.rows[i].type;
                     var curTitle = obj.rows[i].title;
@@ -42,9 +43,10 @@ $(document).ready(function() {
                         newHTML += '<div class="nd-form-details-value">' + curValue + '</div>';
                     }
                     newHTML += '</div>';
+                    newText += curTitle + ':' + curValue + ';';
                 }
                 $('.nd-window .nd-form-details-list').html(newHTML);
-                $('.nd-window form').append('<textarea name="details" style="display:none">' + $('.nd-window .nd-form-details').html() + '</div>');
+                $('.nd-window form').append('<textarea name="details" style="display:none">' + newText + '</div>');
             });
         } else {
             windowOpen(curLink.attr('href'));

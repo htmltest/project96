@@ -1,5 +1,3 @@
-* {outline:none; box-sizing:border-box}
-
 @font-face {font-family:"ChevinPro"; src:url("../fonts/2B01C3_0_0.woff") format("woff"); font-weight:300; font-style:normal}
 @font-face {font-family:"ChevinPro"; src:url("../fonts/2B01C3_4_0.woff") format("woff"); font-weight:normal; font-style:normal}
 @font-face {font-family:"ChevinPro"; src:url("../fonts/2B01C3_3_0.woff") format("woff"); font-weight:600; font-style:normal}
@@ -63,7 +61,8 @@ p {margin:20px 0; padding:0}
 .nd-window-open {overflow:hidden}
 .nd-window-open body {height:auto; overflow:hidden}
 
-.nd-window {position:fixed; left:0; top:0; right:0; bottom:0; z-index:99997; overflow:auto; background:rgba(0, 0, 0, .8)}
+.nd-window {position:fixed; left:0; top:0; right:0; bottom:0; z-index:99997; overflow:auto; background:rgba(0, 0, 0, .8); font:15px/20px ChevinPro, sans-serif; color:#5e5c5c}
+.nd-window * {box-sizing:border-box}
 .nd-window-loading {position:absolute; left:50%; top:50%; width:24px; height:24px; margin:-12px 0 0 -12px; background:url(../images/loading.gif)}
 .nd-window-container {position:absolute; z-index:99999; left:50%; top:50%}
 .nd-window-container-load {position:fixed; left:-9999px; top:-9999px}
