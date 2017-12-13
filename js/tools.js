@@ -10,35 +10,17 @@ $(document).ready(function() {
         'Неверный формат номера телефона'
     );
 
-    $('body').on('click', '.window-link', function(e) {
+    $('body').on('click', '.nd-window-link', function(e) {
         var curLink = $(this);
         if (curLink.data('title') == 'Y') {
             windowOpen(curLink.attr('href'), null, function() {
-                $('.window .form-details-text').html($('title').text());
-                if (typeof (curLink.data('inputs')) != 'undefined') {
-                    var obj = curLink.data('inputs');
-                    var newHTML = '';
-                    for (var i = 0; i < obj.inputs.length; i++) {
-                        var curName = obj.inputs[i].name;
-                        var curValue = obj.inputs[i].value;
-                        newHTML += '<input type="hidden" name="' + curName + '" value="' + curValue + '" />';
-                    }
-                    $('.window form').append(newHTML);
-                }
+                $('.nd-window .nd-form-details-text').html($('title').text());
+                $('.nd-window form').append('<textarea name="details" style="display:none">' + $('.nd-window .nd-form-details').html() + '</div>');
             });
         } else if (typeof (curLink.data('text')) != 'undefined') {
             windowOpen(curLink.attr('href'), null, function() {
-                $('.window .form-details-text').html(curLink.data('text'));
-                if (typeof (curLink.data('inputs')) != 'undefined') {
-                    var obj = curLink.data('inputs');
-                    var newHTML = '';
-                    for (var i = 0; i < obj.inputs.length; i++) {
-                        var curName = obj.inputs[i].name;
-                        var curValue = obj.inputs[i].value;
-                        newHTML += '<input type="hidden" name="' + curName + '" value="' + curValue + '" />';
-                    }
-                    $('.window form').append(newHTML);
-                }
+                $('.nd-window .nd-form-details-text').html(curLink.data('text'));
+                $('.nd-window form').append('<textarea name="details" style="display:none">' + $('.nd-window .nd-form-details').html() + '</div>');
             });
         } else if (typeof (curLink.data('tarif')) != 'undefined') {
             windowOpen(curLink.attr('href'), null, function() {
@@ -49,30 +31,20 @@ $(document).ready(function() {
                     var curTitle = obj.rows[i].title;
                     var curValue = obj.rows[i].value;
                     if (curType == '1') {
-                        newHTML += '<div class="form-details-list-row form-details-list-row-2">';
+                        newHTML += '<div class="nd-form-details-list-row nd-form-details-list-row-2">';
                     } else if (curType == '2') {
-                        newHTML += '<div class="form-details-list-row form-details-list-row-summ">';
+                        newHTML += '<div class="nd-form-details-list-row nd-form-details-list-row-summ">';
                     } else {
-                        newHTML += '<div class="form-details-list-row">';
+                        newHTML += '<div class="nd-form-details-list-row">';
                     }
-                    newHTML += '<div class="form-details-prop">' + curTitle + '</div>';
+                    newHTML += '<div class="nd-form-details-prop">' + curTitle + '</div>';
                     if (curValue != '') {
-                        newHTML += '<div class="form-details-value">' + curValue + '</div>';
+                        newHTML += '<div class="nd-form-details-value">' + curValue + '</div>';
                     }
                     newHTML += '</div>';
                 }
-                $('.window .form-details-list').html(newHTML);
-
-                if (typeof (curLink.data('inputs')) != 'undefined') {
-                    var obj = curLink.data('inputs');
-                    var newHTML = '';
-                    for (var i = 0; i < obj.inputs.length; i++) {
-                        var curName = obj.inputs[i].name;
-                        var curValue = obj.inputs[i].value;
-                        newHTML += '<input type="hidden" name="' + curName + '" value="' + curValue + '" />';
-                    }
-                    $('.window form').append(newHTML);
-                }
+                $('.nd-window .nd-form-details-list').html(newHTML);
+                $('.nd-window form').append('<textarea name="details" style="display:none">' + $('.nd-window .nd-form-details').html() + '</div>');
             });
         } else {
             windowOpen(curLink.attr('href'));
@@ -87,7 +59,7 @@ $(document).ready(function() {
     });
 
     $(document).click(function(e) {
-        if ($(e.target).hasClass('window')) {
+        if ($(e.target).hasClass('nd-window')) {
             windowClose();
         }
     });
@@ -96,20 +68,18 @@ $(document).ready(function() {
         windowPosition();
     });
 
-    $('body').on('click', '.window-close, .window-close-link', function(e) {
+    $('body').on('click', '.nd-window-close, .nd-window-close-link', function(e) {
         windowClose();
         e.preventDefault();
     });
 
 });
 
-var streets = [];
-
 function initForm(curForm) {
     curForm.find('input.maskPhone').mask('+7 (999) 999-99-99');
 
-    curForm.find('.form-input input.required').parent().addClass('required');
-    curForm.find('.form-input input:disabled, .form-input textarea:disabled').parent().addClass('disabled');
+    curForm.find('.nd-form-input input.required').parent().addClass('required');
+    curForm.find('.nd-form-input input:disabled, .nd-form-input textarea:disabled').parent().addClass('disabled');
 
     curForm.find('#address-street').on('keydown', function(e) {
         switch(e.keyCode) {
@@ -127,36 +97,36 @@ function initForm(curForm) {
         var curBlock = curField.parent();
         switch(e.keyCode) {
             case 27:
-                curBlock.find('.form-input-list').remove();
+                curBlock.find('.nd-form-input-list').remove();
                 curField.val('');
                 curField.trigger('blur');
                 return false;
                 break;
 
             case 38:
-                var curIndex = curBlock.find('.form-input-list li').index(curBlock.find('.form-input-list li.active'));
+                var curIndex = curBlock.find('.nd-form-input-list li').index(curBlock.find('.nd-form-input-list li.active'));
                 curIndex--;
                 if (curIndex < 0) {
-                    curIndex = curBlock.find('.form-input-list li').length - 1;
+                    curIndex = curBlock.find('.nd-form-input-list li').length - 1;
                 }
-                curBlock.find('.form-input-list li.active').removeClass('active');
-                curBlock.find('.form-input-list li').eq(curIndex).addClass('active');
-                curField.val(curBlock.find('.form-input-list li').eq(curIndex).text());
+                curBlock.find('.nd-form-input-list li.active').removeClass('active');
+                curBlock.find('.nd-form-input-list li').eq(curIndex).addClass('active');
+                curField.val(curBlock.find('.nd-form-input-list li').eq(curIndex).text());
                 break;
 
             case 40:
-                var curIndex = curBlock.find('.form-input-list li').index(curBlock.find('.form-input-list li.active'));
+                var curIndex = curBlock.find('.nd-form-input-list li').index(curBlock.find('.nd-form-input-list li.active'));
                 curIndex++;
-                if (curIndex > curBlock.find('.form-input-list li').length - 1) {
+                if (curIndex > curBlock.find('.nd-form-input-list li').length - 1) {
                     curIndex = 0;
                 }
-                curBlock.find('.form-input-list li.active').removeClass('active');
-                curBlock.find('.form-input-list li').eq(curIndex).addClass('active');
-                curField.val(curBlock.find('.form-input-list li').eq(curIndex).text());
+                curBlock.find('.nd-form-input-list li.active').removeClass('active');
+                curBlock.find('.nd-form-input-list li').eq(curIndex).addClass('active');
+                curField.val(curBlock.find('.nd-form-input-list li').eq(curIndex).text());
                 break;
 
             case 13:
-                curBlock.find('.form-input-list').remove();
+                curBlock.find('.nd-form-input-list').remove();
                 $('#address-house').parent().removeClass('disabled');
                 $('#address-house').prop('disabled', false);
                 $('#address-house').focus();
@@ -182,21 +152,21 @@ function initForm(curForm) {
                                 return (e.length < 45) && (e.length > 3)
                             });
 
-                        curBlock.find('.form-input-list').remove();
+                        curBlock.find('.nd-form-input-list').remove();
                         if (streets.length > 0) {
-                            var newHTML = '<ul class="form-input-list">';
+                            var newHTML = '<ul class="nd-form-input-list">';
                             for (var i = 0; i < streets.length; i++) {
                                 newHTML += '<li>' + streets[i] + '</li>';
                             }
                             newHTML += '</ul>';
                             curBlock.append(newHTML);
-                            curBlock.find('.form-input-list li').click(function() {
+                            curBlock.find('.nd-form-input-list li').click(function() {
                                 curField.val($(this).html());
-                                curBlock.find('.form-input-list').remove();
+                                curBlock.find('.nd-form-input-list').remove();
                                 curForm.find('#address-house').prop('disabled', false).parent().removeClass('disabled');
                             });
-                            curBlock.find('.form-input-list li').mouseover(function() {
-                                curBlock.find('.form-input-list li.active').removeClass('active');
+                            curBlock.find('.nd-form-input-list li').mouseover(function() {
+                                curBlock.find('.nd-form-input-list li.active').removeClass('active');
                                 $(this).addClass('active');
                             });
                         }
@@ -223,39 +193,39 @@ function initForm(curForm) {
         var curBlock = curField.parent();
         switch(e.keyCode) {
             case 27:
-                curBlock.find('.form-input-list').remove();
+                curBlock.find('.nd-form-input-list').remove();
                 curField.val('');
                 curField.trigger('blur');
                 return false;
                 break;
 
             case 38:
-                var curIndex = curBlock.find('.form-input-list li').index(curBlock.find('.form-input-list li.active'));
+                var curIndex = curBlock.find('.nd-form-input-list li').index(curBlock.find('.nd-form-input-list li.active'));
                 curIndex--;
                 if (curIndex < 0) {
-                    curIndex = curBlock.find('.form-input-list li').length - 1;
+                    curIndex = curBlock.find('.nd-form-input-list li').length - 1;
                 }
-                curBlock.find('.form-input-list li.active').removeClass('active');
-                curBlock.find('.form-input-list li').eq(curIndex).addClass('active');
-                curField.val(curBlock.find('.form-input-list li').eq(curIndex).text());
+                curBlock.find('.nd-form-input-list li.active').removeClass('active');
+                curBlock.find('.nd-form-input-list li').eq(curIndex).addClass('active');
+                curField.val(curBlock.find('.nd-form-input-list li').eq(curIndex).text());
                 break;
 
             case 40:
-                var curIndex = curBlock.find('.form-input-list li').index(curBlock.find('.form-input-list li.active'));
+                var curIndex = curBlock.find('.nd-form-input-list li').index(curBlock.find('.nd-form-input-list li.active'));
                 curIndex++;
-                if (curIndex > curBlock.find('.form-input-list li').length - 1) {
+                if (curIndex > curBlock.find('.nd-form-input-list li').length - 1) {
                     curIndex = 0;
                 }
-                curBlock.find('.form-input-list li.active').removeClass('active');
-                curBlock.find('.form-input-list li').eq(curIndex).addClass('active');
-                curField.val(curBlock.find('.form-input-list li').eq(curIndex).text());
+                curBlock.find('.nd-form-input-list li.active').removeClass('active');
+                curBlock.find('.nd-form-input-list li').eq(curIndex).addClass('active');
+                curField.val(curBlock.find('.nd-form-input-list li').eq(curIndex).text());
                 break;
 
             case 13:
-                curBlock.find('.form-input-list').remove();
+                curBlock.find('.nd-form-input-list').remove();
                 $('#address-house').blur();
-                $('.form-input input.required-address').each(function() {
-                    $(this).prop('disabled', disabled);
+                $('.nd-form-input input.required-address').each(function() {
+                    $(this).prop('disabled', false);
                     $(this).parent().removeClass('disabled');
                 });
                 break;
@@ -266,24 +236,24 @@ function initForm(curForm) {
                     boundedBy: [[55.969188, 37.271944], [55.487158, 37.969576]]
                 }).then(function(items) {
                     var houses = items.map(el => el.value.replace(/,|Москва|Россия/ig, '').replace(/\w+,/ig, '').replace(street, '').trim()).filter(e => (e.length < 10) );
-                    curBlock.find('.form-input-list').remove();
-                    if (streets.length > 0) {
-                        var newHTML = '<ul class="form-input-list">';
+                    curBlock.find('.nd-form-input-list').remove();
+                    if (houses.length > 0) {
+                        var newHTML = '<ul class="nd-form-input-list">';
                         for (var i = 0; i < houses.length; i++) {
                             newHTML += '<li>' + houses[i] + '</li>';
                         }
                         newHTML += '</ul>';
                         curBlock.append(newHTML);
-                        curBlock.find('.form-input-list li').click(function() {
+                        curBlock.find('.nd-form-input-list li').click(function() {
                             curField.val($(this).html());
-                            curBlock.find('.form-input-list').remove();
-                            $('.form-input input.required-address').each(function() {
+                            curBlock.find('.nd-form-input-list').remove();
+                            $('.nd-form-input input.required-address').each(function() {
                                 $(this).prop('disabled', disabled);
                                 $(this).parent().removeClass('disabled');
                             });
                         });
-                        curBlock.find('.form-input-list li').mouseover(function() {
-                            curBlock.find('.form-input-list li.active').removeClass('active');
+                        curBlock.find('.nd-form-input-list li').mouseover(function() {
+                            curBlock.find('.nd-form-input-list li.active').removeClass('active');
                             $(this).addClass('active');
                         });
                     }
@@ -293,7 +263,7 @@ function initForm(curForm) {
        return false;
     });
 
-    if (curForm.hasClass('window-form')) {
+    if (curForm.hasClass('nd-window-form')) {
         curForm.validate({
             ignore: '',
             submitHandler: function(form) {
@@ -308,10 +278,10 @@ function initForm(curForm) {
 }
 
 function windowOpen(linkWindow, dataWindow, callbackWindow) {
-    $('html').addClass('window-open');
+    $('html').addClass('nd-window-open');
 
-    if ($('.window').length == 0) {
-        $('body').append('<div class="window"><div class="window-loading"></div></div>')
+    if ($('.nd-window').length == 0) {
+        $('body').append('<div class="nd-window"><div class="nd-window-loading"></div></div>')
     }
 
     $.ajax({
@@ -321,29 +291,29 @@ function windowOpen(linkWindow, dataWindow, callbackWindow) {
         data: dataWindow,
         cache: false
     }).done(function(html) {
-        if ($('.window').length > 0) {
-            $('.window').remove();
+        if ($('.nd-window').length > 0) {
+            $('.nd-window').remove();
         }
-        $('body').append('<div class="window"><div class="window-loading"></div></div>')
+        $('body').append('<div class="nd-window"><div class="nd-window-loading"></div></div>')
 
-        $('.window').append('<div class="window-container window-container-load"><div class="window-content">' + html + '</div></div>')
+        $('.nd-window').append('<div class="nd-window-container nd-window-container-load"><div class="nd-window-content">' + html + '</div></div>')
 
-        if ($('.window-container img').length > 0) {
-            $('.window-container img').each(function() {
+        if ($('.nd-window-container img').length > 0) {
+            $('.nd-window-container img').each(function() {
                 $(this).attr('src', $(this).attr('src'));
             });
-            $('.window-container').data('curImg', 0);
-            $('.window-container img').one('load', function() {
-                var curImg = $('.window-container').data('curImg');
+            $('.nd-window-container').data('curImg', 0);
+            $('.nd-window-container img').one('load', function() {
+                var curImg = $('.nd-window-container').data('curImg');
                 curImg++;
-                $('.window-container').data('curImg', curImg);
-                if ($('.window-container img').length == curImg) {
-                    $('.window-container').removeClass('window-container-load');
+                $('.nd-window-container').data('curImg', curImg);
+                if ($('.nd-window-container img').length == curImg) {
+                    $('.nd-window-container').removeClass('window-container-load');
                     windowPosition();
                 }
             });
         } else {
-            $('.window-container').removeClass('window-container-load');
+            $('.nd-window-container').removeClass('nd-window-container-load');
             windowPosition();
         }
 
@@ -351,26 +321,26 @@ function windowOpen(linkWindow, dataWindow, callbackWindow) {
             callbackWindow.call();
         }
 
-        $('.window form').each(function() {
+        $('.nd-window form').each(function() {
             initForm($(this));
         });
     });
 }
 
 function windowPosition() {
-    if ($('.window').length > 0) {
-        $('.window-container').css({'left': '50%', 'margin-left': -$('.window-container').width() / 2});
+    if ($('.nd-window').length > 0) {
+        $('.nd-window-container').css({'left': '50%', 'margin-left': -$('.nd-window-container').width() / 2});
 
-        $('.window-container').css({'top': '50%', 'margin-top': -$('.window-container').height() / 2, 'padding-bottom': 0});
-        if ($('.window-container').height() > $('.window').height() - 60) {
-            $('.window-container').css({'top': '30px', 'margin-top': 0, 'padding-bottom': 30});
+        $('.nd-window-container').css({'top': '50%', 'margin-top': -$('.nd-window-container').height() / 2, 'padding-bottom': 0});
+        if ($('.nd-window-container').height() > $('.nd-window').height() - 60) {
+            $('.nd-window-container').css({'top': '30px', 'margin-top': 0, 'padding-bottom': 30});
         }
     }
 }
 
 function windowClose() {
-    if ($('.window').length > 0) {
-        $('.window').remove();
-        $('html').removeClass('window-open');
+    if ($('.nd-window').length > 0) {
+        $('.nd-window').remove();
+        $('html').removeClass('nd-window-open');
     }
 }
