@@ -15,12 +15,14 @@ $(document).ready(function() {
         if (curLink.data('title') == 'Y') {
             windowOpen(curLink.attr('href'), null, function() {
                 $('.nd-window .nd-form-details-text').html($('title').text());
-                $('.nd-window form').append('<textarea name="details" style="display:none">' + $('title').text() + '</div>');
+                $('.nd-window form').append('<textarea name="details" id="details" style="display:none"></textarea>');
+                $('#details').val($('title').text());
             });
         } else if (typeof (curLink.data('text')) != 'undefined') {
             windowOpen(curLink.attr('href'), null, function() {
                 $('.nd-window .nd-form-details-text').html(curLink.data('text'));
-                $('.nd-window form').append('<textarea name="details" style="display:none">' + curLink.data('text') + '</div>');
+                $('.nd-window form').append('<textarea name="details" id="details" style="display:none"></textarea>');
+                $('#details').val(curLink.data('text'));
             });
         } else if (typeof (curLink.data('tarif')) != 'undefined') {
             windowOpen(curLink.attr('href'), null, function() {
@@ -48,7 +50,8 @@ $(document).ready(function() {
                     newText += '\n';
                 }
                 $('.nd-window .nd-form-details-list').html(newHTML);
-                $('.nd-window form').append('<textarea name="details" style="display:none">' + newText + '</div>');
+                $('.nd-window form').append('<textarea name="details" id="details" style="display:none"></textarea>');
+                $('#details').val(newText);
             });
         } else {
             windowOpen(curLink.attr('href'));
