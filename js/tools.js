@@ -255,7 +255,7 @@ function initForm(curForm) {
                             curField.val($(this).html());
                             curBlock.find('.nd-form-input-list').remove();
                             $('.nd-form-input input.required-address').each(function() {
-                                $(this).prop('disabled', disabled);
+                                $(this).prop('disabled', false);
                                 $(this).parent().removeClass('disabled');
                             });
                         });
