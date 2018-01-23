@@ -1,18 +1,19 @@
-@font-face {font-family:"ChevinPro"; src:url("../fonts/2B01C3_0_0.woff") format("woff"); font-weight:300; font-style:normal}
-@font-face {font-family:"ChevinPro"; src:url("../fonts/2B01C3_4_0.woff") format("woff"); font-weight:normal; font-style:normal}
-@font-face {font-family:"ChevinPro"; src:url("../fonts/2B01C3_3_0.woff") format("woff"); font-weight:600; font-style:normal}
-@font-face {font-family:"ChevinPro"; src:url("../fonts/2B01C3_2_0.woff") format("woff"); font-weight:700; font-style:normal}
-@font-face {font-family:"ChevinPro"; src:url("../fonts/2B01C3_1_0.woff") format("woff"); font-weight:900; font-style:normal}
+@font-face {font-family:"Chevin"; src:url("../fonts/chevin-thin.woff2") format("woff2"), url("../fonts/chevin-thin.woff") format("woff"), url("../fonts/chevin-thin.ttf") format("truetype"); font-weight:200; font-style:normal}
+@font-face {font-family:"Chevin"; src:url("../fonts/chevin-light.woff2") format("woff2"), url("../fonts/chevin-light.woff") format("woff"), url("../fonts/chevin-light.ttf") format("truetype"); font-weight:300; font-style:normal}
+@font-face {font-family:"Chevin"; src:url("../fonts/chevin-medium.woff2") format("woff2"), url("../fonts/chevin-medium.woff") format("woff"), url("../fonts/chevin-medium.ttf") format("truetype"); font-weight:400; font-style:normal}
+@font-face {font-family:"Chevin"; src:url("../fonts/chevin-demi-bold.woff2") format("woff2"), url("../fonts/chevin-demi-bold.woff") format("woff"), url("../fonts/chevin-demi-bold.ttf") format("truetype"); font-weight:600; font-style:normal}
+@font-face {font-family:"Chevin"; src:url("../fonts/chevin-bold.woff2") format("woff2"), url("../fonts/chevin-bold.woff") format("woff"), url("../fonts/chevin-bold.ttf") format("truetype"); font-weight:700; font-style:normal}
+@font-face {font-family:"Chevin"; src:url("../fonts/chevin-extra-bold.woff2") format("woff2"), url("../fonts/chevin-extra-bold.woff") format("woff"), url("../fonts/chevin-extra-bold.ttf") format("truetype"); font-weight:800; font-style:normal}
 
 html {min-width:320px}
 
-body {min-width:320px; margin:0; padding:0; font:15px/20px ChevinPro, sans-serif; color:#5e5c5c; background:#fff; -webkit-text-size-adjust:100%}
+body {min-width:320px; margin:0; padding:0; font:15px/20px Chevin, sans-serif; color:#5e5c5c; background:#fff; -webkit-text-size-adjust:100%}
 
 a {color:#5e5c5c}
 
 p {margin:20px 0; padding:0}
 
-.nd-btn {display:inline-block; vertical-align:top; position:relative; border-radius:3px; background:#e50004; margin:0; padding:0 20px; outline:none; border:none; text-decoration:none; height:36px; box-sizing:border-box; color:#fff; text-align:center; font:600 15px/36px ChevinPro,sans-serif; -webkit-appearance:none; cursor:pointer}
+.nd-btn {display:inline-block; vertical-align:top; position:relative; border-radius:3px; background:#e50004; margin:0; padding:0 20px; outline:none; border:none; text-decoration:none; height:36px; box-sizing:border-box; color:#fff; text-align:center; font:600 15px/36px Chevin,sans-serif; -webkit-appearance:none; cursor:pointer}
 .nd-btn:hover {background:#cd161c}
 .nd-btn.disabled {cursor:default; background:#777}
 
@@ -23,14 +24,14 @@ p {margin:20px 0; padding:0}
 .nd-form-input.disabled {background:#f8f9f9; pointer-events:none}
 
 .nd-form-input input,
-.nd-form-input textarea {position:relative; z-index:1; border:1px solid #ccc; font:16px/20px ChevinPro, sans-serif; color:#1b1c20; vertical-align:top; margin:0; padding:6px 15px 8px 15px; width:100%; height:36px; box-sizing:border-box; outline:none; border-radius:2px; background:url(../images/blank.gif); -webkit-appearance:none}
+.nd-form-input textarea {position:relative; z-index:1; border:1px solid #ccc; font:16px/20px Chevin, sans-serif; color:#1b1c20; vertical-align:top; margin:0; padding:6px 15px 8px 15px; width:100%; height:36px; box-sizing:border-box; outline:none; border-radius:2px; background:url(../images/blank.gif); -webkit-appearance:none}
 .nd-form-input textarea {height:auto; resize:none; overflow:auto}
-.nd-form-input input::-webkit-input-placeholder {opacity:.5}
-.nd-form-input input::-moz-placeholder {opacity:.5}
-.nd-form-input input:-ms-input-placeholder {opacity:.5}
-.nd-form-input textarea::-webkit-input-placeholder {opacity:.5}
-.nd-form-input textarea::-moz-placeholder {opacity:.5}
-.nd-form-input textarea:-ms-input-placeholder {opacity:.5}
+.nd-form-input input::-webkit-input-placeholder {opacity:1; color:#747474}
+.nd-form-input input::-moz-placeholder {opacity:1; color:#747474}
+.nd-form-input input:-ms-input-placeholder {opacity:1; color:#747474}
+.nd-form-input textarea::-webkit-input-placeholder {opacity:1; color:#747474}
+.nd-form-input textarea::-moz-placeholder {opacity:1; color:#747474}
+.nd-form-input textarea:-ms-input-placeholder {opacity:1; color:#747474}
 .nd-form-input input.error::-webkit-input-placeholder {opacity:0}
 .nd-form-input input.error::-moz-placeholder {opacity:0}
 .nd-form-input input.error:-ms-input-placeholder {opacity:0}
@@ -43,12 +44,12 @@ p {margin:20px 0; padding:0}
 .nd-form-input textarea:focus {border-color:#777}
 .nd-form-input input:focus+label.error,
 .nd-form-input textarea:focus+label.error {display:none !important}
-.nd-form-input input:focus::-webkit-input-placeholder {opacity:.5}
-.nd-form-input input:focus::-moz-placeholder {opacity:.5}
-.nd-form-input input:focus:-ms-input-placeholder {opacity:.5}
-.nd-form-input textarea:focus::-webkit-input-placeholder {opacity:.5}
-.nd-form-input textarea:focus::-moz-placeholder {opacity:.5}
-.nd-form-input textarea:focus:-ms-input-placeholder {opacity:.5}
+.nd-form-input input:focus::-webkit-input-placeholder {opacity:1; color:#747474}
+.nd-form-input input:focus::-moz-placeholder {opacity:1; color:#747474}
+.nd-form-input input:focus:-ms-input-placeholder {opacity:1; color:#747474}
+.nd-form-input textarea:focus::-webkit-input-placeholder {opacity:1; color:#747474}
+.nd-form-input textarea:focus::-moz-placeholder {opacity:1; color:#747474}
+.nd-form-input textarea:focus:-ms-input-placeholder {opacity:1; color:#747474}
 .nd-form-input label.error {position:absolute; left:16px; top:1px; color:#e50004; font-size:16px; line-height:34px; white-space:nowrap}
 .nd-form-input-list {position:absolute; left:0; top:100%; width:100%; background:#fff; z-index:99; box-shadow:0 4px 3px 0 rgba(27, 28, 32, .4); margin:0; padding:0; list-style:none; max-height:180px; overflow:auto}
 .nd-form-input-list li {margin:0; padding:7px 16px 9px 16px; font-size:16px; line-height:20px; color:#1b1c20; cursor:pointer}
@@ -61,7 +62,7 @@ p {margin:20px 0; padding:0}
 .nd-window-open {overflow:hidden}
 .nd-window-open body {height:auto; overflow:hidden}
 
-.nd-window {position:fixed; left:0; top:0; right:0; bottom:0; z-index:99997; overflow:auto; background:rgba(0, 0, 0, .8); font:15px/20px ChevinPro, sans-serif; color:#5e5c5c}
+.nd-window {position:fixed; left:0; top:0; right:0; bottom:0; z-index:99997; overflow:auto; background:rgba(0, 0, 0, .8); font:15px/20px Chevin, sans-serif; color:#5e5c5c}
 .nd-window * {box-sizing:border-box}
 .nd-window-loading {position:absolute; left:50%; top:50%; width:24px; height:24px; margin:-12px 0 0 -12px; background:url(../images/loading.gif)}
 .nd-window-container {position:absolute; z-index:99999; left:50%; top:50%}
@@ -99,7 +100,7 @@ p {margin:20px 0; padding:0}
 .nd-address-box-street {float:left; width:68%; padding:0 4px 0 0}
 .nd-address-box-house {float:left; width:32%; padding:0 0 0 4px}
 
-.nd-special-offer {display:block; color:#777; border-radius:2px; background:#d2ffd2; font-weight:500; font-size:15px; line-height:19px; cursor:pointer; position:relative; margin:8px 0 10px 0}
+.nd-special-offer {display:block; color:#777; border-radius:2px; background:#d2ffd2; font-weight:600; font-size:15px; line-height:19px; cursor:pointer; position:relative; margin:8px 0 10px 0}
 .nd-special-offer input {display:none}
 .nd-special-offer-checkbox {display:block; position:absolute; top:11px; left:17px; border:1px solid #999; width:16px; height:16px; border-radius:2px; background:#f8f9f9}
 .nd-special-offer-tic {display:none; position:absolute; left:50%; top:50%; margin:-4px 0 0 -6px; line-height:0}

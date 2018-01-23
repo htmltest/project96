@@ -106,6 +106,8 @@ function initForm(curForm) {
             case 27:
                 curBlock.find('.nd-form-input-list').remove();
                 curField.val('');
+                $('#address-house').val('');
+                $('#address-house').parent().find('.nd-form-input-list').remove();
                 curField.trigger('blur');
                 return false;
                 break;
@@ -137,10 +139,14 @@ function initForm(curForm) {
                 $('#address-house').parent().removeClass('disabled');
                 $('#address-house').prop('disabled', false);
                 $('#address-house').focus();
+                $('#address-house').val('');
+                $('#address-house').parent().find('.nd-form-input-list').remove();
                 break;
 
             default:
                 if (curValue.length > 1) {
+                    $('#address-house').val('');
+                    $('#address-house').parent().find('.nd-form-input-list').remove();
                     ymaps.suggest(`г. Москва, ${curValue}`, {
                         boundedBy: [[55.969188, 37.271944], [55.487158, 37.969576]]
                     }).then(function(items) {
@@ -273,13 +279,15 @@ function initForm(curForm) {
     if (curForm.hasClass('nd-window-form')) {
         curForm.validate({
             ignore: '',
+            focusInvalid: false,
             submitHandler: function(form) {
                 windowOpen($(form).attr('action'), $(form).serialize());
             }
         });
     } else {
         curForm.validate({
-            ignore: ''
+            ignore: '',
+            focusInvalid: false
         });
     }
 }
