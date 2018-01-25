@@ -90,6 +90,7 @@ p {margin:20px 0; padding:0}
 .nd-form-details-list-row-summ {margin-top:15px; color:#1b1c20}
 .nd-form-details-prop {display:table-cell; vertical-align:top; width:160px}
 .nd-form-details-value {display:table-cell; vertical-align:top; color:#1b1c20}
+.nd-form-details-value p {margin:0; padding:0}
 .nd-form-details-subvalue {float:right; clear:right; width:100px}
 
 .nd-window-thanks-2 {width:480px; padding:12px 24px 24px 24px}
