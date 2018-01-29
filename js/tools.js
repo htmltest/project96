@@ -80,6 +80,62 @@ $(document).ready(function() {
         e.preventDefault();
     });
 
+    $.validator.addMethod('addressStreet',
+        function(value, element) {
+            var result = false;
+
+            var curField = $(element);
+            var curBlock = curField.parent();
+            var curForm = curBlock.parents().filter('form');
+
+            var streets = curBlock.data('streets');
+
+            if (typeof (streets) != 'undefined' && streets.length > 0 && streets.indexOf(value) > -1) {
+                curForm.find('input.addressHome').prop('disabled', false);
+                curForm.find('input.addressHome').parent().removeClass('disabled');
+                curForm.find('input.addressHome').trigger('focus');
+                result = true;
+            } else {
+                curField.val('');
+                curForm.find('input.addressHome').val('');
+                curForm.find('input.addressHome').prop('disabled', true);
+                curForm.find('input.addressHome').parent().addClass('disabled');
+                curForm.find('input.required-address').val('');
+                curForm.find('input.required-address').prop('disabled', true);
+                curForm.find('input.required-address').parent().addClass('disabled');
+            }
+
+            return result;
+        },
+        'Выберите улицу'
+    );
+
+    $.validator.addMethod('addressHome',
+        function(value, element) {
+            var result = false;
+
+            var curField = $(element);
+            var curBlock = curField.parent();
+            var curForm = curBlock.parents().filter('form');
+
+            var houses = curBlock.data('houses');
+
+            if (typeof (houses) != 'undefined' && houses.length > 0 && houses.indexOf(value.toString()) > -1) {
+                curForm.find('input.required-address').prop('disabled', false);
+                curForm.find('input.required-address').parent().removeClass('disabled');
+                result = true;
+            } else {
+                curField.val('');
+                curForm.find('input.required-address').val('');
+                curForm.find('input.required-address').prop('disabled', true);
+                curForm.find('input.required-address').parent().addClass('disabled');
+            }
+
+            return result;
+        },
+        'Выберите дом'
+    );
+
 });
 
 function initForm(curForm) {
@@ -88,47 +144,27 @@ function initForm(curForm) {
     curForm.find('.nd-form-input input.required').parent().addClass('required');
     curForm.find('.nd-form-input input:disabled, .nd-form-input textarea:disabled').parent().addClass('disabled');
 
-    curForm.find('#address-street').on('keydown', function(e) {
-        switch(e.keyCode) {
-            case 13:
-                return false;
-                break;
-            default:
-                break;
-        }
-    });
+    if (curForm.hasClass('nd-window-form')) {
+        curForm.validate({
+            ignore: '',
+            focusInvalid: false,
+            submitHandler: function(form) {
+                windowOpen($(form).attr('action'), $(form).serialize());
+            }
+        });
+    } else {
+        curForm.validate({
+            ignore: '',
+            focusInvalid: false
+        });
+    }
 
-    curForm.find('#address-street').on('change', function(e) {
+    curForm.find('input.addressStreet').on('blur', function(e) {
         var curField = $(this);
-        window.setTimeout(function() {
-            var curValue = curField.val();
-            var curBlock = curField.parent();
-            ymaps.suggest(`г. Москва, ${curValue}`, {
-                boundedBy: [[55.969188, 37.271944], [55.487158, 37.969576]]
-            }).then(function(items) {
-                var streets = items.map(el => el.value.replace(/Россия, Москва,?/, '').replace(/\w+,/ig, '').trim())
-                    .filter(e => {
-                        const reservedWords = [
-                            'метро',
-                            'река',
-                            'тоннель',
-                            ',',
-                            'сад',
-                            'больница',
-                            'Борисовский пруд',
-                        ];
-                        if (reservedWords.some((word) => ~e.indexOf(word))) return;
-                        return (e.length < 45) && (e.length > 3)
-                    });
-                if (streets.indexOf(curValue) < 0) {
-                    curField.val('');
-                    curBlock.parents().filter('form').valid();
-                }
-            });
-        }, 300);
+        window.setTimeout(function() { curField.parent().find('.nd-form-input-list').remove()}, 500);
     });
 
-    curForm.find('#address-street').on('keyup', function(e) {
+    curForm.find('input.addressStreet').on('keyup', function(e) {
         var curField = $(this);
         var curValue = curField.val();
         var curBlock = curField.parent();
@@ -136,10 +172,7 @@ function initForm(curForm) {
             case 27:
                 curBlock.find('.nd-form-input-list').remove();
                 curField.val('');
-                $('#address-house').val('');
-                $('#address-house').parent().find('.nd-form-input-list').remove();
                 curField.trigger('blur');
-                return false;
                 break;
 
             case 38:
@@ -165,18 +198,12 @@ function initForm(curForm) {
                 break;
 
             case 13:
-                curBlock.find('.nd-form-input-list').remove();
-                $('#address-house').parent().removeClass('disabled');
-                $('#address-house').prop('disabled', false);
-                $('#address-house').focus();
-                $('#address-house').val('');
-                $('#address-house').parent().find('.nd-form-input-list').remove();
+                curField.trigger('blur');
                 break;
 
             default:
+                curBlock.find('.nd-form-input-list li.active').removeClass('active');
                 if (curValue.length > 1) {
-                    $('#address-house').val('');
-                    $('#address-house').parent().find('.nd-form-input-list').remove();
                     ymaps.suggest(`г. Москва, ${curValue}`, {
                         boundedBy: [[55.969188, 37.271944], [55.487158, 37.969576]]
                     }).then(function(items) {
@@ -196,6 +223,7 @@ function initForm(curForm) {
                             });
 
                         curBlock.find('.nd-form-input-list').remove();
+                        curBlock.data('streets', streets);
                         if (streets.length > 0) {
                             var newHTML = '<ul class="nd-form-input-list">';
                             for (var i = 0; i < streets.length; i++) {
@@ -205,9 +233,8 @@ function initForm(curForm) {
                             curBlock.append(newHTML);
                             curBlock.find('.nd-form-input-list li').click(function() {
                                 curField.val($(this).html());
-                                curBlock.find('.nd-form-input-list').remove();
-                                curForm.find('#address-house').prop('disabled', false).parent().removeClass('disabled');
                                 curBlock.parents().filter('form').valid();
+                                curBlock.find('.nd-form-input-list').remove();
                             });
                             curBlock.find('.nd-form-input-list li').mouseover(function() {
                                 curBlock.find('.nd-form-input-list li.active').removeClass('active');
@@ -221,36 +248,12 @@ function initForm(curForm) {
        return false;
     });
 
-    curForm.find('#address-house').on('keydown', function(e) {
-        switch(e.keyCode) {
-            case 13:
-                return false;
-                break;
-            default:
-                break;
-        }
-    });
-
-    curForm.find('#address-house').on('change', function(e) {
+    curForm.find('input.addressHome').on('blur', function(e) {
         var curField = $(this);
-        window.setTimeout(function() {
-            var curValue = curField.val();
-            var curBlock = curField.parent();
-            var curForm = curBlock.parents().filter('form');
-            var street = curForm.find('#address-street').val();
-            ymaps.suggest(`г. Москва, ${street}, ${curValue}`, {
-                boundedBy: [[55.969188, 37.271944], [55.487158, 37.969576]]
-            }).then(function(items) {
-                var houses = items.map(el => el.value.replace(/,|Москва|Россия/ig, '').replace(/\w+,/ig, '').replace(street, '').trim()).filter(e => (e.length < 10) );
-                if (houses.indexOf(curValue) < 0) {
-                    curField.val('');
-                    curBlock.parents().filter('form').valid();
-                }
-            });
-        }, 300);
+        window.setTimeout(function() { curField.parent().find('.nd-form-input-list').remove()}, 500);
     });
 
-    curForm.find('#address-house').on('keyup', function(e) {
+    curForm.find('input.addressHome').on('keyup', function(e) {
         var curField = $(this);
         var curValue = curField.val();
         var curBlock = curField.parent();
@@ -259,7 +262,6 @@ function initForm(curForm) {
                 curBlock.find('.nd-form-input-list').remove();
                 curField.val('');
                 curField.trigger('blur');
-                return false;
                 break;
 
             case 38:
@@ -285,21 +287,18 @@ function initForm(curForm) {
                 break;
 
             case 13:
-                curBlock.find('.nd-form-input-list').remove();
-                $('#address-house').blur();
-                $('.nd-form-input input.required-address').each(function() {
-                    $(this).prop('disabled', false);
-                    $(this).parent().removeClass('disabled');
-                });
+                curField.trigger('blur');
                 break;
 
             default:
-                var street = curForm.find('#address-street').val();
+                curBlock.find('.nd-form-input-list li.active').removeClass('active');
+                var street = curBlock.parents().filter('form').find('input.addressStreet').val();
                 ymaps.suggest(`г. Москва, ${street}, ${curValue}`, {
                     boundedBy: [[55.969188, 37.271944], [55.487158, 37.969576]]
                 }).then(function(items) {
                     var houses = items.map(el => el.value.replace(/,|Москва|Россия/ig, '').replace(/\w+,/ig, '').replace(street, '').trim()).filter(e => (e.length < 10) );
                     curBlock.find('.nd-form-input-list').remove();
+                    curBlock.data('houses', houses);
                     if (houses.length > 0) {
                         var newHTML = '<ul class="nd-form-input-list">';
                         for (var i = 0; i < houses.length; i++) {
@@ -309,12 +308,8 @@ function initForm(curForm) {
                         curBlock.append(newHTML);
                         curBlock.find('.nd-form-input-list li').click(function() {
                             curField.val($(this).html());
+                            curBlock.parents().filter('form').valid();
                             curBlock.find('.nd-form-input-list').remove();
-                            $('.nd-form-input input.required-address').each(function() {
-                                $(this).prop('disabled', false);
-                                $(this).parent().removeClass('disabled');
-                                curBlock.parents().filter('form').valid();
-                            });
                         });
                         curBlock.find('.nd-form-input-list li').mouseover(function() {
                             curBlock.find('.nd-form-input-list li.active').removeClass('active');
@@ -326,21 +321,6 @@ function initForm(curForm) {
        }
        return false;
     });
-
-    if (curForm.hasClass('nd-window-form')) {
-        curForm.validate({
-            ignore: '',
-            focusInvalid: false,
-            submitHandler: function(form) {
-                windowOpen($(form).attr('action'), $(form).serialize());
-            }
-        });
-    } else {
-        curForm.validate({
-            ignore: '',
-            focusInvalid: false
-        });
-    }
 }
 
 function windowOpen(linkWindow, dataWindow, callbackWindow) {

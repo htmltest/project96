@@ -42,15 +42,27 @@ p {margin:20px 0; padding:0}
 .nd-form-input textarea.error {border-color:#e50004}
 .nd-form-input input:focus,
 .nd-form-input textarea:focus {border-color:#777}
-.nd-form-input input:focus+label.error,
-.nd-form-input textarea:focus+label.error {display:none !important}
 .nd-form-input input:focus::-webkit-input-placeholder {opacity:1; color:#747474}
 .nd-form-input input:focus::-moz-placeholder {opacity:1; color:#747474}
 .nd-form-input input:focus:-ms-input-placeholder {opacity:1; color:#747474}
 .nd-form-input textarea:focus::-webkit-input-placeholder {opacity:1; color:#747474}
 .nd-form-input textarea:focus::-moz-placeholder {opacity:1; color:#747474}
 .nd-form-input textarea:focus:-ms-input-placeholder {opacity:1; color:#747474}
-.nd-form-input label.error {position:absolute; left:16px; top:1px; color:#e50004; font-size:16px; line-height:34px; white-space:nowrap}
+.nd-form-input label.error {display:none !important; position:absolute; left:16px; top:1px; color:#e50004; font-size:16px; line-height:34px; white-space:nowrap}
+.nd-form-input input.error+label.error {display:block !important}
+.nd-form-input textarea.error+label.error {display:block !important}
+.nd-form-input input:focus+label.error,
+.nd-form-input textarea:focus+label.error {display:none !important}
+.nd-form-input.disabled input.error::-webkit-input-placeholder {opacity:1}
+.nd-form-input.disabled input.error::-moz-placeholder {opacity:1}
+.nd-form-input.disabled input.error:-ms-input-placeholder {opacity:1}
+.nd-form-input.disabled textarea.error::-webkit-input-placeholder {opacity:1}
+.nd-form-input.disabled textarea.error::-moz-placeholder {opacity:1}
+.nd-form-input.disabled textarea.error:-ms-input-placeholder {opacity:1}
+.nd-form-input.disabled input.error,
+.nd-form-input.disabled textarea.error {border-color:#ccc}
+.nd-form-input.disabled label.error,
+.nd-form-input.disabled input.error+label.error {display:none !important}
 .nd-form-input-list {position:absolute; left:0; top:100%; width:100%; background:#fff; z-index:99; box-shadow:0 4px 3px 0 rgba(27, 28, 32, .4); margin:0; padding:0; list-style:none; max-height:180px; overflow:auto}
 .nd-form-input-list li {margin:0; padding:7px 16px 9px 16px; font-size:16px; line-height:20px; color:#1b1c20; cursor:pointer}
 .nd-form-input-list li.active {background:#ff7373}

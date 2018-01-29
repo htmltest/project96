@@ -1,21 +1,21 @@
 <div class="nd-window-callback">
-    <form action="windows/thanks.html" method="post" class="nd-form nd-window-form">
+    <form action="windows/thanks.html" method="post" class="nd-form nd-window-form" autocomplete="off">
         <div class="nd-form-title">Заявка на подключение</div>
         <div class="nd-address-box">
             <div class="nd-address-box-street">
                 <div class="nd-form-input">
-                    <input type="text" name="street" placeholder="Улица" class="required" value="" id="address-street" autocomplete="off" />
+                    <input type="text" name="street" placeholder="Улица" class="addressStreet" value="" autocomplete="off" />
                 </div>
             </div>
             <div class="nd-address-box-house">
                 <div class="nd-form-input">
-                    <input type="text" name="house" placeholder="Дом" class="required" value="" disabled="disabled" id="address-house" autocomplete="off" />
+                    <input type="text" name="house" placeholder="Дом" class="addressHome" value="" disabled="disabled" autocomplete="off" />
                 </div>
             </div>
             <div class="nd-form-tip">Проверьте, подключен ли ваш дом к сети RiNet и отправьте заявку</div>
         </div>
         <div class="nd-form-input">
-            <input type="text" name="name" placeholder="Ваше имя" class="required required-address" value="" disabled="disabled" />
+            <input type="text" name="name" placeholder="Ваше имя" class="required required-address" value="" disabled="disabled" data-msg="Введите имя" />
         </div>
         <div class="nd-form-input">
             <input type="text" name="phone" placeholder="Телефонный номер" class="required maskPhone required-address" value="" disabled="disabled" />
