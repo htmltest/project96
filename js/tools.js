@@ -96,10 +96,9 @@ $(document).ready(function() {
                 curForm.find('input.addressHome').val('');
                 curForm.find('input.addressHome').prop('disabled', true);
                 curForm.find('input.addressHome').parent().addClass('disabled');
-                curForm.find('input.required-address').val('');
                 curForm.find('input.required-address').prop('disabled', true);
                 curForm.find('input.required-address').parent().addClass('disabled');
-                curForm.find('.nd-form-submit .nd-btn').prop('disabled', true);
+                curForm.find('.nd-form-submit .nd-btn').addClass('disabled');
                 curForm.find('.nd-form-connection-status-ok, .nd-form-connection-status-fail').hide();
                 curForm.find('.nd-form-connection-status-default').show();
             }
@@ -143,10 +142,9 @@ $(document).ready(function() {
                 result = true;
             } else {
                 curField.val('');
-                curForm.find('input.required-address').val('');
                 curForm.find('input.required-address').prop('disabled', true);
                 curForm.find('input.required-address').parent().addClass('disabled');
-                curForm.find('.nd-form-submit .nd-btn').prop('disabled', true);
+                curForm.find('.nd-form-submit .nd-btn').addClass('disabled');
                 curForm.find('.nd-form-connection-status-ok, .nd-form-connection-status-fail').hide();
                 curForm.find('.nd-form-connection-status-default').show();
             }
@@ -169,33 +167,21 @@ function initForm(curForm) {
             ignore: '',
             focusInvalid: false,
             onkeyup: function(element, event) {
-                if (event.which === 9 && this.elementValue(element) === '') {
-                    return;
-                } else if (element.name in this.submitted || element === this.lastElement) {
-                    this.element(element);
-                }
                 this.checkForm();
 
                 if (this.valid()) {
-                    $(element).parents().filter('form').find('.nd-form-submit .nd-btn').prop('disabled', false);
+                    $(element).parents().filter('form').find('.nd-form-submit .nd-btn').removeClass('disabled');
                 } else {
-                    $(element).parents().filter('form').find('.nd-form-submit .nd-btn').prop('disabled', true);
+                    $(element).parents().filter('form').find('.nd-form-submit .nd-btn').addClass('disabled');
                 }
             },
             onclick: function(element) {
-                if (element.name in this.submitted) {
-                    this.element(element);
-
-                } else if (element.parentNode.name in this.submitted) {
-                    this.element(element.parentNode);
-                }
-
                 this.checkForm();
 
                 if (this.valid()) {
-                    $(element).parents().filter('form').find('.nd-form-submit .nd-btn').prop('disabled', false);
+                    $(element).parents().filter('form').find('.nd-form-submit').removeClass('disabled');
                 } else {
-                    $(element).parents().filter('form').find('.nd-form-submit .nd-btn').prop('disabled', true);
+                    $(element).parents().filter('form').find('.nd-form-submit').addClass('disabled');
                 }
             },
             submitHandler: function(form) {
@@ -207,35 +193,23 @@ function initForm(curForm) {
             ignore: '',
             focusInvalid: false,
             onkeyup: function(element, event) {
-                if (event.which === 9 && this.elementValue(element) === '') {
-                    return;
-                } else if (element.name in this.submitted || element === this.lastElement) {
-                    this.element(element);
-                }
                 this.checkForm();
 
                 if (this.valid()) {
-                    $(element).parents().filter('form').find('.nd-form-submit .nd-btn').prop('disabled', false);
+                    $(element).parents().filter('form').find('.nd-form-submit .nd-btn').removeClass('disabled');
                 } else {
-                    $(element).parents().filter('form').find('.nd-form-submit .nd-btn').prop('disabled', true);
+                    $(element).parents().filter('form').find('.nd-form-submit .nd-btn').addClass('disabled');
                 }
             },
             onclick: function(element) {
-                if (element.name in this.submitted) {
-                    this.element(element);
-
-                } else if (element.parentNode.name in this.submitted) {
-                    this.element(element.parentNode);
-                }
-
                 this.checkForm();
 
                 if (this.valid()) {
-                    $(element).parents().filter('form').find('.nd-form-submit .nd-btn').prop('disabled', false);
+                    $(element).parents().filter('form').find('.nd-form-submit .nd-btn').removeClass('disabled');
                 } else {
-                    $(element).parents().filter('form').find('.nd-form-submit .nd-btn').prop('disabled', true);
+                    $(element).parents().filter('form').find('.nd-form-submit .nd-btn').addClass('disabled');
                 }
-            },
+            }
         });
     }
 
@@ -269,10 +243,9 @@ function initForm(curForm) {
                 curForm.find('input.addressHome').val('');
                 curForm.find('input.addressHome').prop('disabled', true);
                 curForm.find('input.addressHome').parent().addClass('disabled');
-                curForm.find('input.required-address').val('');
                 curForm.find('input.required-address').prop('disabled', true);
                 curForm.find('input.required-address').parent().addClass('disabled');
-                curForm.find('.nd-form-submit .nd-btn').prop('disabled', true);
+                curForm.find('.nd-form-submit .nd-btn').addClass('disabled');
                 curForm.find('.nd-form-connection-status-ok, .nd-form-connection-status-fail').hide();
                 curForm.find('.nd-form-connection-status-default').show();
                 break;
@@ -289,10 +262,9 @@ function initForm(curForm) {
                 curForm.find('input.addressHome').val('');
                 curForm.find('input.addressHome').prop('disabled', true);
                 curForm.find('input.addressHome').parent().addClass('disabled');
-                curForm.find('input.required-address').val('');
                 curForm.find('input.required-address').prop('disabled', true);
                 curForm.find('input.required-address').parent().addClass('disabled');
-                curForm.find('.nd-form-submit .nd-btn').prop('disabled', true);
+                curForm.find('.nd-form-submit .nd-btn').addClass('disabled');
                 curForm.find('.nd-form-connection-status-ok, .nd-form-connection-status-fail').hide();
                 curForm.find('.nd-form-connection-status-default').show();
                 break;
@@ -318,10 +290,9 @@ function initForm(curForm) {
                 curForm.find('input.addressHome').val('');
                 curForm.find('input.addressHome').prop('disabled', true);
                 curForm.find('input.addressHome').parent().addClass('disabled');
-                curForm.find('input.required-address').val('');
                 curForm.find('input.required-address').prop('disabled', true);
                 curForm.find('input.required-address').parent().addClass('disabled');
-                curForm.find('.nd-form-submit .nd-btn').prop('disabled', true);
+                curForm.find('.nd-form-submit .nd-btn').addClass('disabled');
                 curForm.find('.nd-form-connection-status-ok, .nd-form-connection-status-fail').hide();
                 curForm.find('.nd-form-connection-status-default').show();
                 if (curValue.length > 1) {
@@ -396,10 +367,9 @@ function initForm(curForm) {
                 curBlock.find('.nd-form-input-list li.active').removeClass('active');
                 curBlock.find('.nd-form-input-list li').eq(curIndex).addClass('active');
                 curField.val(curBlock.find('.nd-form-input-list li').eq(curIndex).text());
-                curForm.find('input.required-address').val('');
                 curForm.find('input.required-address').prop('disabled', true);
                 curForm.find('input.required-address').parent().addClass('disabled');
-                curForm.find('.nd-form-submit .nd-btn').prop('disabled', true);
+                curForm.find('.nd-form-submit .nd-btn').addClass('disabled');
                 curForm.find('.nd-form-connection-status-ok, .nd-form-connection-status-fail').hide();
                 curForm.find('.nd-form-connection-status-default').show();
                 break;
@@ -413,10 +383,9 @@ function initForm(curForm) {
                 curBlock.find('.nd-form-input-list li.active').removeClass('active');
                 curBlock.find('.nd-form-input-list li').eq(curIndex).addClass('active');
                 curField.val(curBlock.find('.nd-form-input-list li').eq(curIndex).text());
-                curForm.find('input.required-address').val('');
                 curForm.find('input.required-address').prop('disabled', true);
                 curForm.find('input.required-address').parent().addClass('disabled');
-                curForm.find('.nd-form-submit .nd-btn').prop('disabled', true);
+                curForm.find('.nd-form-submit .nd-btn').addClass('disabled');
                 curForm.find('.nd-form-connection-status-ok, .nd-form-connection-status-fail').hide();
                 curForm.find('.nd-form-connection-status-default').show();
                 break;
@@ -439,10 +408,9 @@ function initForm(curForm) {
 
             default:
                 curBlock.find('.nd-form-input-list li.active').removeClass('active');
-                curForm.find('input.required-address').val('');
                 curForm.find('input.required-address').prop('disabled', true);
                 curForm.find('input.required-address').parent().addClass('disabled');
-                curForm.find('.nd-form-submit .nd-btn').prop('disabled', true);
+                curForm.find('.nd-form-submit .nd-btn').addClass('disabled');
                 curForm.find('.nd-form-connection-status-ok, .nd-form-connection-status-fail').hide();
                 curForm.find('.nd-form-connection-status-default').show();
                 var street = curBlock.parents().filter('form').find('input.addressStreet').val();

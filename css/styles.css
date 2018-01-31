@@ -13,7 +13,7 @@ p {margin:20px 0; padding:0}
 
 .nd-btn {display:inline-block; vertical-align:top; position:relative; border-radius:3px; background:#e50004; margin:0; padding:0 20px; outline:none; border:none; text-decoration:none; height:36px; box-sizing:border-box; color:#fff; text-align:center; font:500 15px/36px ChevinPro,sans-serif; -webkit-appearance:none; cursor:pointer; letter-spacing:.02em}
 .nd-btn:hover {background:#cd161c}
-.nd-btn:disabled {cursor:default; background:#777}
+.nd-btn.disabled {cursor:default; background:#777}
 
 .nd-form {margin:20px 0; padding:0}
 
