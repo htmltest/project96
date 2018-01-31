@@ -2,10 +2,7 @@ $(document).ready(function() {
 
     $.validator.addMethod('maskPhone',
         function(value, element) {
-            if (value == '') {
-                return true;
-            }
-            return /^\+7 \(\d{3}\) \d{3}\-\d{2}\-\d{2}$/.test(value);
+            return this.optional(element) || /^\+7 \(_{3}\) _{3}\-_{2}\-_{2}$/.test(value) || /^\+7 \(\d{3}\) \d{3}\-\d{2}\-\d{2}$/.test(value);
         },
         'Неверный формат номера телефона'
     );
@@ -93,7 +90,6 @@ $(document).ready(function() {
             if (typeof (streets) != 'undefined' && streets.length > 0 && streets.indexOf(value) > -1) {
                 curForm.find('input.addressHome').prop('disabled', false);
                 curForm.find('input.addressHome').parent().removeClass('disabled');
-                curForm.find('input.addressHome').trigger('focus');
                 result = true;
             } else {
                 curField.val('');
@@ -103,9 +99,12 @@ $(document).ready(function() {
                 curForm.find('input.required-address').val('');
                 curForm.find('input.required-address').prop('disabled', true);
                 curForm.find('input.required-address').parent().addClass('disabled');
+                curForm.find('.nd-form-submit .nd-btn').prop('disabled', true);
+                curForm.find('.nd-form-connection-status-ok, .nd-form-connection-status-fail').hide();
+                curForm.find('.nd-form-connection-status-default').show();
             }
 
-            return result;
+            return this.optional(element) || result;
         },
         'Выберите улицу'
     );
@@ -123,15 +122,36 @@ $(document).ready(function() {
             if (typeof (houses) != 'undefined' && houses.length > 0 && houses.indexOf(value.toString()) > -1) {
                 curForm.find('input.required-address').prop('disabled', false);
                 curForm.find('input.required-address').parent().removeClass('disabled');
+                var urlcheck = $('.nd-form-connection-status-default').data('urlcheck');
+                if (typeof (urlcheck) != 'undefined') {
+                    $.ajax({
+                        type: 'POST',
+                        url: urlcheck,
+                        dataType: 'html',
+                        data: curForm.serialize(),
+                        cache: false
+                    }).done(function(html) {
+                        if (html == 'ok') {
+                            curForm.find('.nd-form-connection-status-default, .nd-form-connection-status-fail').hide();
+                            curForm.find('.nd-form-connection-status-ok').show();
+                        } else {
+                            curForm.find('.nd-form-connection-status-default, .nd-form-connection-status-ok').hide();
+                            curForm.find('.nd-form-connection-status-fail').show();
+                        }
+                    });
+                }
                 result = true;
             } else {
                 curField.val('');
                 curForm.find('input.required-address').val('');
                 curForm.find('input.required-address').prop('disabled', true);
                 curForm.find('input.required-address').parent().addClass('disabled');
+                curForm.find('.nd-form-submit .nd-btn').prop('disabled', true);
+                curForm.find('.nd-form-connection-status-ok, .nd-form-connection-status-fail').hide();
+                curForm.find('.nd-form-connection-status-default').show();
             }
 
-            return result;
+            return this.optional(element) || result;
         },
         'Выберите дом'
     );
@@ -148,6 +168,36 @@ function initForm(curForm) {
         curForm.validate({
             ignore: '',
             focusInvalid: false,
+            onkeyup: function(element, event) {
+                if (event.which === 9 && this.elementValue(element) === '') {
+                    return;
+                } else if (element.name in this.submitted || element === this.lastElement) {
+                    this.element(element);
+                }
+                this.checkForm();
+
+                if (this.valid()) {
+                    $(element).parents().filter('form').find('.nd-form-submit .nd-btn').prop('disabled', false);
+                } else {
+                    $(element).parents().filter('form').find('.nd-form-submit .nd-btn').prop('disabled', true);
+                }
+            },
+            onclick: function(element) {
+                if (element.name in this.submitted) {
+                    this.element(element);
+
+                } else if (element.parentNode.name in this.submitted) {
+                    this.element(element.parentNode);
+                }
+
+                this.checkForm();
+
+                if (this.valid()) {
+                    $(element).parents().filter('form').find('.nd-form-submit .nd-btn').prop('disabled', false);
+                } else {
+                    $(element).parents().filter('form').find('.nd-form-submit .nd-btn').prop('disabled', true);
+                }
+            },
             submitHandler: function(form) {
                 windowOpen($(form).attr('action'), $(form).serialize());
             }
@@ -155,7 +205,37 @@ function initForm(curForm) {
     } else {
         curForm.validate({
             ignore: '',
-            focusInvalid: false
+            focusInvalid: false,
+            onkeyup: function(element, event) {
+                if (event.which === 9 && this.elementValue(element) === '') {
+                    return;
+                } else if (element.name in this.submitted || element === this.lastElement) {
+                    this.element(element);
+                }
+                this.checkForm();
+
+                if (this.valid()) {
+                    $(element).parents().filter('form').find('.nd-form-submit .nd-btn').prop('disabled', false);
+                } else {
+                    $(element).parents().filter('form').find('.nd-form-submit .nd-btn').prop('disabled', true);
+                }
+            },
+            onclick: function(element) {
+                if (element.name in this.submitted) {
+                    this.element(element);
+
+                } else if (element.parentNode.name in this.submitted) {
+                    this.element(element.parentNode);
+                }
+
+                this.checkForm();
+
+                if (this.valid()) {
+                    $(element).parents().filter('form').find('.nd-form-submit .nd-btn').prop('disabled', false);
+                } else {
+                    $(element).parents().filter('form').find('.nd-form-submit .nd-btn').prop('disabled', true);
+                }
+            },
         });
     }
 
@@ -173,6 +253,8 @@ function initForm(curForm) {
                 curBlock.find('.nd-form-input-list').remove();
                 curField.val('');
                 curField.trigger('blur');
+                curForm.find('.nd-form-connection-status-ok, .nd-form-connection-status-fail').hide();
+                curForm.find('.nd-form-connection-status-default').show();
                 break;
 
             case 38:
@@ -184,6 +266,15 @@ function initForm(curForm) {
                 curBlock.find('.nd-form-input-list li.active').removeClass('active');
                 curBlock.find('.nd-form-input-list li').eq(curIndex).addClass('active');
                 curField.val(curBlock.find('.nd-form-input-list li').eq(curIndex).text());
+                curForm.find('input.addressHome').val('');
+                curForm.find('input.addressHome').prop('disabled', true);
+                curForm.find('input.addressHome').parent().addClass('disabled');
+                curForm.find('input.required-address').val('');
+                curForm.find('input.required-address').prop('disabled', true);
+                curForm.find('input.required-address').parent().addClass('disabled');
+                curForm.find('.nd-form-submit .nd-btn').prop('disabled', true);
+                curForm.find('.nd-form-connection-status-ok, .nd-form-connection-status-fail').hide();
+                curForm.find('.nd-form-connection-status-default').show();
                 break;
 
             case 40:
@@ -195,6 +286,27 @@ function initForm(curForm) {
                 curBlock.find('.nd-form-input-list li.active').removeClass('active');
                 curBlock.find('.nd-form-input-list li').eq(curIndex).addClass('active');
                 curField.val(curBlock.find('.nd-form-input-list li').eq(curIndex).text());
+                curForm.find('input.addressHome').val('');
+                curForm.find('input.addressHome').prop('disabled', true);
+                curForm.find('input.addressHome').parent().addClass('disabled');
+                curForm.find('input.required-address').val('');
+                curForm.find('input.required-address').prop('disabled', true);
+                curForm.find('input.required-address').parent().addClass('disabled');
+                curForm.find('.nd-form-submit .nd-btn').prop('disabled', true);
+                curForm.find('.nd-form-connection-status-ok, .nd-form-connection-status-fail').hide();
+                curForm.find('.nd-form-connection-status-default').show();
+                break;
+
+            case 35:
+                break;
+
+            case 36:
+                break;
+
+            case 37:
+                break;
+
+            case 39:
                 break;
 
             case 13:
@@ -203,6 +315,15 @@ function initForm(curForm) {
 
             default:
                 curBlock.find('.nd-form-input-list li.active').removeClass('active');
+                curForm.find('input.addressHome').val('');
+                curForm.find('input.addressHome').prop('disabled', true);
+                curForm.find('input.addressHome').parent().addClass('disabled');
+                curForm.find('input.required-address').val('');
+                curForm.find('input.required-address').prop('disabled', true);
+                curForm.find('input.required-address').parent().addClass('disabled');
+                curForm.find('.nd-form-submit .nd-btn').prop('disabled', true);
+                curForm.find('.nd-form-connection-status-ok, .nd-form-connection-status-fail').hide();
+                curForm.find('.nd-form-connection-status-default').show();
                 if (curValue.length > 1) {
                     ymaps.suggest(`г. Москва, ${curValue}`, {
                         boundedBy: [[55.969188, 37.271944], [55.487158, 37.969576]]
@@ -262,6 +383,8 @@ function initForm(curForm) {
                 curBlock.find('.nd-form-input-list').remove();
                 curField.val('');
                 curField.trigger('blur');
+                curForm.find('.nd-form-connection-status-ok, .nd-form-connection-status-fail').hide();
+                curForm.find('.nd-form-connection-status-default').show();
                 break;
 
             case 38:
@@ -273,6 +396,12 @@ function initForm(curForm) {
                 curBlock.find('.nd-form-input-list li.active').removeClass('active');
                 curBlock.find('.nd-form-input-list li').eq(curIndex).addClass('active');
                 curField.val(curBlock.find('.nd-form-input-list li').eq(curIndex).text());
+                curForm.find('input.required-address').val('');
+                curForm.find('input.required-address').prop('disabled', true);
+                curForm.find('input.required-address').parent().addClass('disabled');
+                curForm.find('.nd-form-submit .nd-btn').prop('disabled', true);
+                curForm.find('.nd-form-connection-status-ok, .nd-form-connection-status-fail').hide();
+                curForm.find('.nd-form-connection-status-default').show();
                 break;
 
             case 40:
@@ -284,6 +413,24 @@ function initForm(curForm) {
                 curBlock.find('.nd-form-input-list li.active').removeClass('active');
                 curBlock.find('.nd-form-input-list li').eq(curIndex).addClass('active');
                 curField.val(curBlock.find('.nd-form-input-list li').eq(curIndex).text());
+                curForm.find('input.required-address').val('');
+                curForm.find('input.required-address').prop('disabled', true);
+                curForm.find('input.required-address').parent().addClass('disabled');
+                curForm.find('.nd-form-submit .nd-btn').prop('disabled', true);
+                curForm.find('.nd-form-connection-status-ok, .nd-form-connection-status-fail').hide();
+                curForm.find('.nd-form-connection-status-default').show();
+                break;
+
+            case 35:
+                break;
+
+            case 36:
+                break;
+
+            case 37:
+                break;
+
+            case 39:
                 break;
 
             case 13:
@@ -292,6 +439,12 @@ function initForm(curForm) {
 
             default:
                 curBlock.find('.nd-form-input-list li.active').removeClass('active');
+                curForm.find('input.required-address').val('');
+                curForm.find('input.required-address').prop('disabled', true);
+                curForm.find('input.required-address').parent().addClass('disabled');
+                curForm.find('.nd-form-submit .nd-btn').prop('disabled', true);
+                curForm.find('.nd-form-connection-status-ok, .nd-form-connection-status-fail').hide();
+                curForm.find('.nd-form-connection-status-default').show();
                 var street = curBlock.parents().filter('form').find('input.addressStreet').val();
                 ymaps.suggest(`г. Москва, ${street}, ${curValue}`, {
                     boundedBy: [[55.969188, 37.271944], [55.487158, 37.969576]]
