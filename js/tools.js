@@ -185,7 +185,11 @@ function initForm(curForm) {
                 }
             },
             submitHandler: function(form) {
-                windowOpen($(form).attr('action'), $(form).serialize());
+                if ($(form).find('input.required:not(.valid), textarea.required:not(.valid)').length == 0) {
+                    windowOpen($(form).attr('action'), $(form).serialize());
+                } else {
+                    return false;
+                }
             }
         });
     } else {
