@@ -287,6 +287,9 @@ function initForm(curForm) {
 
             case 13:
                 curField.trigger('blur');
+                if (curForm.find('.nd-form-input-list li.active').length > 0) {
+                    curForm.find('input.addressHome').trigger('focus');
+                }
                 break;
 
             default:
@@ -331,6 +334,7 @@ function initForm(curForm) {
                                 curField.val($(this).html());
                                 curBlock.parents().filter('form').valid();
                                 curBlock.find('.nd-form-input-list').remove();
+                                curForm.find('input.addressHome').trigger('focus');
                             });
                             curBlock.find('.nd-form-input-list li').mouseover(function() {
                                 curBlock.find('.nd-form-input-list li.active').removeClass('active');
