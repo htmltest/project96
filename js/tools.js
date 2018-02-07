@@ -92,7 +92,6 @@ $(document).ready(function() {
                 curForm.find('input.addressHome').parent().removeClass('disabled');
                 result = true;
             } else {
-                curField.val('');
                 curForm.find('input.addressHome').val('');
                 curForm.find('input.addressHome').prop('disabled', true);
                 curForm.find('input.addressHome').parent().addClass('disabled');
@@ -141,7 +140,6 @@ $(document).ready(function() {
                 }
                 result = true;
             } else {
-                curField.val('');
                 curForm.find('input.required-address').prop('disabled', true);
                 curForm.find('input.required-address').parent().addClass('disabled');
                 curForm.find('.nd-form-submit .nd-btn').addClass('disabled');
@@ -161,6 +159,7 @@ function initForm(curForm) {
 
     curForm.find('.nd-form-input input.required').parent().addClass('required');
     curForm.find('.nd-form-input input:disabled, .nd-form-input textarea:disabled').parent().addClass('disabled');
+    curForm.find('.nd-form-input input').attr('autocomplete', 'off');
 
     if (curForm.hasClass('nd-window-form')) {
         curForm.validate({

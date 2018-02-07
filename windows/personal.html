@@ -8,12 +8,14 @@
         <div class="nd-address-box">
             <div class="nd-address-box-street">
                 <div class="nd-form-input">
-                    <input type="text" name="street" placeholder="Улица" class="addressStreet" value="" autocomplete="off" />
+                    <input type="text" style="display:none" />
+                    <input type="text" name="fieldID1" placeholder="Улица" class="addressStreet" value="" autocomplete="false" data-msg="Выберите улицу" />
                 </div>
             </div>
             <div class="nd-address-box-house">
                 <div class="nd-form-input">
-                    <input type="text" name="house" placeholder="Дом" class="addressHome" value="" disabled="disabled" autocomplete="off" />
+                    <input type="text" style="display:none" />
+                    <input type="text" name="fieldID2" name="house" placeholder="Дом" class="addressHome" value="" disabled="disabled" autocomplete="false" data-msg="Выберите дом" />
                 </div>
             </div>
         </div>

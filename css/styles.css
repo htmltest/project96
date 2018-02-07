@@ -39,9 +39,9 @@ p {margin:20px 0; padding:0}
 .nd-form-input textarea.error::-moz-placeholder {opacity:0}
 .nd-form-input textarea.error:-ms-input-placeholder {opacity:0}
 .nd-form-input input.error,
-.nd-form-input textarea.error {border-color:#e50004}
+.nd-form-input textarea.error {border-color:#e50004; color:rgba(0, 0, 0, 0)}
 .nd-form-input input:focus,
-.nd-form-input textarea:focus {border-color:#777}
+.nd-form-input textarea:focus {border-color:#777; color:#1b1c20}
 .nd-form-input input:focus::-webkit-input-placeholder {opacity:1; color:#747474}
 .nd-form-input input:focus::-moz-placeholder {opacity:1; color:#747474}
 .nd-form-input input:focus:-ms-input-placeholder {opacity:1; color:#747474}
