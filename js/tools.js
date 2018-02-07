@@ -218,6 +218,7 @@ function initForm(curForm) {
 
     curForm.find('input.addressStreet').on('blur', function(e) {
         var curField = $(this);
+        curField.parents().filter('form').valid();
         window.setTimeout(function() { curField.parent().find('.nd-form-input-list').remove()}, 500);
     });
 
@@ -228,7 +229,6 @@ function initForm(curForm) {
         switch(e.keyCode) {
             case 27:
                 curBlock.find('.nd-form-input-list').remove();
-                curField.val('');
                 curField.trigger('blur');
                 curForm.find('.nd-form-connection-status-ok, .nd-form-connection-status-fail').hide();
                 curForm.find('.nd-form-connection-status-default').show();
@@ -349,6 +349,7 @@ function initForm(curForm) {
 
     curForm.find('input.addressHome').on('blur', function(e) {
         var curField = $(this);
+        curField.parents().filter('form').valid();
         window.setTimeout(function() { curField.parent().find('.nd-form-input-list').remove()}, 500);
     });
 
@@ -359,7 +360,6 @@ function initForm(curForm) {
         switch(e.keyCode) {
             case 27:
                 curBlock.find('.nd-form-input-list').remove();
-                curField.val('');
                 curField.trigger('blur');
                 curForm.find('.nd-form-connection-status-ok, .nd-form-connection-status-fail').hide();
                 curForm.find('.nd-form-connection-status-default').show();
