@@ -1,12 +1,5 @@
 $(document).ready(function() {
 
-    $.validator.addMethod('maskPhone',
-        function(value, element) {
-            return this.optional(element) || /^\+7 \(_{3}\) _{3}\-_{2}\-_{2}$/.test(value) || /^\+7 \(\d{3}\) \d{3}\-\d{2}\-\d{2}$/.test(value);
-        },
-        'Неверный формат номера телефона'
-    );
-
     $('body').on('click', '.window-link', function(e) {
         var curLink = $(this);
         if (curLink.data('title') == 'Y') {
@@ -77,81 +70,6 @@ $(document).ready(function() {
         e.preventDefault();
     });
 
-    $.validator.addMethod('addressStreet',
-        function(value, element) {
-            var result = false;
-
-            var curField = $(element);
-            var curBlock = curField.parent();
-            var curForm = curBlock.parents().filter('form');
-
-            var streets = curBlock.data('streets');
-
-            if (typeof (streets) != 'undefined' && streets.length > 0 && streets.indexOf(value) > -1) {
-                curForm.find('input.addressHome').prop('disabled', false);
-                curForm.find('input.addressHome').parent().removeClass('disabled');
-                result = true;
-            } else {
-                curForm.find('input.addressHome').val('');
-                curForm.find('input.addressHome').prop('disabled', true);
-                curForm.find('input.addressHome').parent().addClass('disabled');
-                curForm.find('input.required-address').prop('disabled', true);
-                curForm.find('input.required-address').parent().addClass('disabled');
-                curForm.find('.nd-form-submit .nd-btn').addClass('disabled');
-                curForm.find('.nd-form-connection-status-ok, .nd-form-connection-status-fail').hide();
-                curForm.find('.nd-form-connection-status-default').show();
-            }
-
-            return this.optional(element) || result;
-        },
-        'Выберите улицу'
-    );
-
-    $.validator.addMethod('addressHome',
-        function(value, element) {
-            var result = false;
-
-            var curField = $(element);
-            var curBlock = curField.parent();
-            var curForm = curBlock.parents().filter('form');
-
-            var houses = curBlock.data('houses');
-
-            if (typeof (houses) != 'undefined' && houses.length > 0 && houses.indexOf(value.toString()) > -1) {
-                curForm.find('input.required-address').prop('disabled', false);
-                curForm.find('input.required-address').parent().removeClass('disabled');
-                var urlcheck = $('.nd-form-connection-status-default').data('urlcheck');
-                if (typeof (urlcheck) != 'undefined') {
-                    $.ajax({
-                        type: 'POST',
-                        url: urlcheck,
-                        dataType: 'html',
-                        data: curForm.serialize(),
-                        cache: false
-                    }).done(function(html) {
-                        if (html == 'ok') {
-                            curForm.find('.nd-form-connection-status-default, .nd-form-connection-status-fail').hide();
-                            curForm.find('.nd-form-connection-status-ok').show();
-                        } else {
-                            curForm.find('.nd-form-connection-status-default, .nd-form-connection-status-ok').hide();
-                            curForm.find('.nd-form-connection-status-fail').show();
-                        }
-                    });
-                }
-                result = true;
-            } else {
-                curForm.find('input.required-address').prop('disabled', true);
-                curForm.find('input.required-address').parent().addClass('disabled');
-                curForm.find('.nd-form-submit .nd-btn').addClass('disabled');
-                curForm.find('.nd-form-connection-status-ok, .nd-form-connection-status-fail').hide();
-                curForm.find('.nd-form-connection-status-default').show();
-            }
-
-            return this.optional(element) || result;
-        },
-        'Выберите дом'
-    );
-
 });
 
 function initForm(curForm) {
@@ -161,64 +79,127 @@ function initForm(curForm) {
     curForm.find('.nd-form-input input:disabled, .nd-form-input textarea:disabled').parent().addClass('disabled');
     curForm.find('.nd-form-input input').attr('autocomplete', 'off');
 
-    if (curForm.hasClass('nd-window-form')) {
-        curForm.validate({
-            ignore: '',
-            focusInvalid: false,
-            onkeyup: function(element, event) {
-                this.checkForm();
-
-                if (this.valid()) {
-                    $(element).parents().filter('form').find('.nd-form-submit .nd-btn').removeClass('disabled');
-                } else {
-                    $(element).parents().filter('form').find('.nd-form-submit .nd-btn').addClass('disabled');
+    curForm.find('input.required, textarea.required').on('keyup blur change click', function() {
+        var curField = $(this);
+        var curForm = curField.parents().filter('form');
+        if (!curField.hasClass('email') && !curField.hasClass('maskPhone') && !curField.hasClass('addressStreet') && !curField.hasClass('addressHome')) {
+            if (curField.val() == '') {
+                curField.removeClass('valid');
+                curField.addClass('error');
+                if (curField.parent().find('label').length == 0) {
+                    curField.after('<label class="error"></label>');
                 }
-            },
-            onclick: function(element) {
-                this.checkForm();
-
-                if (this.valid()) {
-                    $(element).parents().filter('form').find('.nd-form-submit').removeClass('disabled');
-                } else {
-                    $(element).parents().filter('form').find('.nd-form-submit').addClass('disabled');
+                if (curField.data('require-msg')) {
+                    curField.parent().find('label').html(curField.data('require-msg'));
                 }
-            },
-            submitHandler: function(form) {
-                if ($(form).find('input.required:not(.valid), textarea.required:not(.valid)').length == 0) {
-                    windowOpen($(form).attr('action'), $(form).serialize());
+            } else {
+                curField.addClass('valid');
+                curField.removeClass('error');
+                curField.parent().find('label').remove();
+            }
+        } else if (curField.hasClass('email')) {
+            if (curField.val() == '') {
+                curField.removeClass('valid');
+                curField.addClass('error');
+                if (curField.parent().find('label').length == 0) {
+                    curField.after('<label class="error"></label>');
+                }
+                if (curField.data('require-msg')) {
+                    curField.parent().find('label').html(curField.data('require-msg'));
+                }
+            } else {
+                if (/^[-a-z0-9~!$%^&*_=+}{\'?]+(\.[-a-z0-9~!$%^&*_=+}{\'?]+)*@([a-z0-9_][-a-z0-9_]*(\.[-a-z0-9_]+)*\.(aero|arpa|biz|com|coop|edu|gov|info|int|mil|museum|name|net|org|pro|travel|mobi|[a-z][a-z])|([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}))(:[0-9]{1,5})?$/.test(curField.val())) {
+                    curField.addClass('valid');
+                    curField.removeClass('error');
+                    curField.parent().find('label').remove();
                 } else {
-                    return false;
+                    curField.removeClass('valid');
+                    curField.addClass('error');
+                    if (curField.parent().find('label').length == 0) {
+                        curField.after('<label class="error"></label>');
+                    }
+                    if (curField.data('require-msg')) {
+                        curField.parent().find('label').html(curField.data('require-msg'));
+                    }
+                    if (curField.data('email-msg')) {
+                        curField.parent().find('label').html(curField.data('email-msg'));
+                    }
+                }
+            }
+        } else if (curField.hasClass('maskPhone')) {
+            if (curField.val() == '') {
+                curField.removeClass('valid');
+                curField.addClass('error');
+                if (curField.parent().find('label').length == 0) {
+                    curField.after('<label class="error"></label>');
+                }
+                if (curField.data('require-msg')) {
+                    curField.parent().find('label').html(curField.data('require-msg'));
+                }
+            } else {
+                if (/^\+7 \(\d{3}\) \d{3}\-\d{2}\-\d{2}$/.test(curField.val())) {
+                    curField.addClass('valid');
+                    curField.removeClass('error');
+                    curField.parent().find('label').remove();
+                } else {
+                    curField.removeClass('valid');
+                    curField.addClass('error');
+                    if (curField.parent().find('label').length == 0) {
+                        curField.after('<label class="error"></label>');
+                    }
+                    if (curField.data('require-msg')) {
+                        curField.parent().find('label').html(curField.data('require-msg'));
+                    }
+                    if (curField.data('phone-msg')) {
+                        curField.parent().find('label').html(curField.data('phone-msg'));
+                    }
+                }
+            }
+        }
+
+        if (curForm.find('input.required:not(.valid), textarea.required:not(.valid)').length == 0) {
+            curForm.find('.nd-form-submit .nd-btn').removeClass('disabled');
+        } else {
+            curForm.find('.nd-form-submit .nd-btn').addClass('disabled');
+        }
+    });
+
+    curForm.on('submit', function(e) {
+        var curForm = $(this);
+        curForm.find('input.required:not(.valid):not(:disabled), textarea.required:not(.valid):not(:disabled)').each(function() {
+            var curField = $(this);
+            if (curField.val() == '') {
+                curField.addClass('error');
+                if (curField.parent().find('label').length == 0) {
+                    curField.after('<label class="error"></label>');
+                }
+                if (curField.data('require-msg')) {
+                    curField.parent().find('label').html(curField.data('require-msg'));
                 }
             }
         });
-    } else {
-        curForm.validate({
-            ignore: '',
-            focusInvalid: false,
-            onkeyup: function(element, event) {
-                this.checkForm();
 
-                if (this.valid()) {
-                    $(element).parents().filter('form').find('.nd-form-submit .nd-btn').removeClass('disabled');
-                } else {
-                    $(element).parents().filter('form').find('.nd-form-submit .nd-btn').addClass('disabled');
-                }
-            },
-            onclick: function(element) {
-                this.checkForm();
-
-                if (this.valid()) {
-                    $(element).parents().filter('form').find('.nd-form-submit .nd-btn').removeClass('disabled');
-                } else {
-                    $(element).parents().filter('form').find('.nd-form-submit .nd-btn').addClass('disabled');
-                }
+        if (curForm.find('input.required:not(.valid), textarea.required:not(.valid)').length == 0) {
+            if (curForm.hasClass('nd-window-form')) {
+                windowOpen(curForm.attr('action'), curForm.serialize());
+                e.preventDefault();
             }
-        });
-    }
+        } else {
+            e.preventDefault();
+        }
+    });
 
     curForm.find('input.addressStreet').on('blur', function(e) {
         var curField = $(this);
-        curField.parents().filter('form').valid();
+        if (curField.hasClass('required') && !curField.hasClass('valid')) {
+            curField.addClass('error');
+            if (curField.parent().find('label').length == 0) {
+                curField.after('<label class="error"></label>');
+            }
+            if (curField.data('require-msg')) {
+                curField.parent().find('label').html(curField.data('require-msg'));
+            }
+        }
         window.setTimeout(function() { curField.parent().find('.nd-form-input-list').remove()}, 500);
     });
 
@@ -230,46 +211,54 @@ function initForm(curForm) {
             case 27:
                 curBlock.find('.nd-form-input-list').remove();
                 curField.trigger('blur');
-                curForm.find('.nd-form-connection-status-ok, .nd-form-connection-status-fail').hide();
-                curForm.find('.nd-form-connection-status-default').show();
                 break;
 
             case 38:
-                var curIndex = curBlock.find('.nd-form-input-list li').index(curBlock.find('.nd-form-input-list li.active'));
-                curIndex--;
-                if (curIndex < 0) {
-                    curIndex = curBlock.find('.nd-form-input-list li').length - 1;
+                if (curBlock.find('.nd-form-input-list').length > 0) {
+                    var curIndex = curBlock.find('.nd-form-input-list li').index(curBlock.find('.nd-form-input-list li.active'));
+                    curIndex--;
+                    if (curIndex < 0) {
+                        curIndex = curBlock.find('.nd-form-input-list li').length - 1;
+                    }
+                    curBlock.find('.nd-form-input-list li.active').removeClass('active');
+                    curBlock.find('.nd-form-input-list li').eq(curIndex).addClass('active');
+                    curField.val(curBlock.find('.nd-form-input-list li').eq(curIndex).text());
+                    curForm.find('input.addressHome').val('');
+                    curForm.find('input.addressHome').removeClass('valid');
+                    curForm.find('input.addressHome').prop('disabled', true);
+                    curForm.find('input.addressHome').parent().addClass('disabled');
+                    curForm.find('input.required-address').prop('disabled', true);
+                    curForm.find('input.required-address').parent().addClass('disabled');
+                    curForm.find('.nd-form-submit .nd-btn').addClass('disabled');
+                    curForm.find('.nd-form-connection-status-ok, .nd-form-connection-status-fail').hide();
+                    curForm.find('.nd-form-connection-status-default').show();
+                    curField.removeClass('error').addClass('valid');
+                    curField.parent().find('label').remove();
                 }
-                curBlock.find('.nd-form-input-list li.active').removeClass('active');
-                curBlock.find('.nd-form-input-list li').eq(curIndex).addClass('active');
-                curField.val(curBlock.find('.nd-form-input-list li').eq(curIndex).text());
-                curForm.find('input.addressHome').val('');
-                curForm.find('input.addressHome').prop('disabled', true);
-                curForm.find('input.addressHome').parent().addClass('disabled');
-                curForm.find('input.required-address').prop('disabled', true);
-                curForm.find('input.required-address').parent().addClass('disabled');
-                curForm.find('.nd-form-submit .nd-btn').addClass('disabled');
-                curForm.find('.nd-form-connection-status-ok, .nd-form-connection-status-fail').hide();
-                curForm.find('.nd-form-connection-status-default').show();
                 break;
 
             case 40:
-                var curIndex = curBlock.find('.nd-form-input-list li').index(curBlock.find('.nd-form-input-list li.active'));
-                curIndex++;
-                if (curIndex > curBlock.find('.nd-form-input-list li').length - 1) {
-                    curIndex = 0;
+                if (curBlock.find('.nd-form-input-list').length > 0) {
+                    var curIndex = curBlock.find('.nd-form-input-list li').index(curBlock.find('.nd-form-input-list li.active'));
+                    curIndex++;
+                    if (curIndex > curBlock.find('.nd-form-input-list li').length - 1) {
+                        curIndex = 0;
+                    }
+                    curBlock.find('.nd-form-input-list li.active').removeClass('active');
+                    curBlock.find('.nd-form-input-list li').eq(curIndex).addClass('active');
+                    curField.val(curBlock.find('.nd-form-input-list li').eq(curIndex).text());
+                    curForm.find('input.addressHome').val('');
+                    curForm.find('input.addressHome').removeClass('valid');
+                    curForm.find('input.addressHome').prop('disabled', true);
+                    curForm.find('input.addressHome').parent().addClass('disabled');
+                    curForm.find('input.required-address').prop('disabled', true);
+                    curForm.find('input.required-address').parent().addClass('disabled');
+                    curForm.find('.nd-form-submit .nd-btn').addClass('disabled');
+                    curForm.find('.nd-form-connection-status-ok, .nd-form-connection-status-fail').hide();
+                    curForm.find('.nd-form-connection-status-default').show();
+                    curField.removeClass('error').addClass('valid');
+                    curField.parent().find('label').remove();
                 }
-                curBlock.find('.nd-form-input-list li.active').removeClass('active');
-                curBlock.find('.nd-form-input-list li').eq(curIndex).addClass('active');
-                curField.val(curBlock.find('.nd-form-input-list li').eq(curIndex).text());
-                curForm.find('input.addressHome').val('');
-                curForm.find('input.addressHome').prop('disabled', true);
-                curForm.find('input.addressHome').parent().addClass('disabled');
-                curForm.find('input.required-address').prop('disabled', true);
-                curForm.find('input.required-address').parent().addClass('disabled');
-                curForm.find('.nd-form-submit .nd-btn').addClass('disabled');
-                curForm.find('.nd-form-connection-status-ok, .nd-form-connection-status-fail').hide();
-                curForm.find('.nd-form-connection-status-default').show();
                 break;
 
             case 35:
@@ -287,13 +276,23 @@ function initForm(curForm) {
             case 13:
                 curField.trigger('blur');
                 if (curForm.find('.nd-form-input-list li.active').length > 0) {
+                    curForm.find('input.addressHome').prop('disabled', false);
+                    curForm.find('input.addressHome').parent().removeClass('disabled');
                     curForm.find('input.addressHome').trigger('focus');
                 }
                 break;
 
             default:
                 curBlock.find('.nd-form-input-list li.active').removeClass('active');
+                curField.removeClass('valid').addClass('error');
+                if (curField.parent().find('label').length == 0) {
+                    curField.after('<label class="error"></label>');
+                }
+                if (curField.data('require-msg')) {
+                    curField.parent().find('label').html(curField.data('require-msg'));
+                }
                 curForm.find('input.addressHome').val('');
+                curForm.find('input.addressHome').removeClass('valid');
                 curForm.find('input.addressHome').prop('disabled', true);
                 curForm.find('input.addressHome').parent().addClass('disabled');
                 curForm.find('input.required-address').prop('disabled', true);
@@ -331,8 +330,11 @@ function initForm(curForm) {
                             curBlock.append(newHTML);
                             curBlock.find('.nd-form-input-list li').click(function() {
                                 curField.val($(this).html());
-                                curBlock.parents().filter('form').valid();
+                                curField.removeClass('error').addClass('valid');
+                                curField.parent().find('label').remove();
                                 curBlock.find('.nd-form-input-list').remove();
+                                curForm.find('input.addressHome').prop('disabled', false);
+                                curForm.find('input.addressHome').parent().removeClass('disabled');
                                 curForm.find('input.addressHome').trigger('focus');
                             });
                             curBlock.find('.nd-form-input-list li').mouseover(function() {
@@ -349,7 +351,15 @@ function initForm(curForm) {
 
     curForm.find('input.addressHome').on('blur', function(e) {
         var curField = $(this);
-        curField.parents().filter('form').valid();
+        if (curField.hasClass('required') && !curField.hasClass('valid')) {
+            curField.addClass('error');
+            if (curField.parent().find('label').length == 0) {
+                curField.after('<label class="error"></label>');
+            }
+            if (curField.data('require-msg')) {
+                curField.parent().find('label').html(curField.data('require-msg'));
+            }
+        }
         window.setTimeout(function() { curField.parent().find('.nd-form-input-list').remove()}, 500);
     });
 
@@ -361,40 +371,46 @@ function initForm(curForm) {
             case 27:
                 curBlock.find('.nd-form-input-list').remove();
                 curField.trigger('blur');
-                curForm.find('.nd-form-connection-status-ok, .nd-form-connection-status-fail').hide();
-                curForm.find('.nd-form-connection-status-default').show();
                 break;
 
             case 38:
-                var curIndex = curBlock.find('.nd-form-input-list li').index(curBlock.find('.nd-form-input-list li.active'));
-                curIndex--;
-                if (curIndex < 0) {
-                    curIndex = curBlock.find('.nd-form-input-list li').length - 1;
+                if (curBlock.find('.nd-form-input-list').length > 0) {
+                    var curIndex = curBlock.find('.nd-form-input-list li').index(curBlock.find('.nd-form-input-list li.active'));
+                    curIndex--;
+                    if (curIndex < 0) {
+                        curIndex = curBlock.find('.nd-form-input-list li').length - 1;
+                    }
+                    curBlock.find('.nd-form-input-list li.active').removeClass('active');
+                    curBlock.find('.nd-form-input-list li').eq(curIndex).addClass('active');
+                    curField.val(curBlock.find('.nd-form-input-list li').eq(curIndex).text());
+                    curForm.find('input.required-address').prop('disabled', true);
+                    curForm.find('input.required-address').parent().addClass('disabled');
+                    curForm.find('.nd-form-submit .nd-btn').addClass('disabled');
+                    curForm.find('.nd-form-connection-status-ok, .nd-form-connection-status-fail').hide();
+                    curForm.find('.nd-form-connection-status-default').show();
+                    curField.removeClass('error').addClass('valid');
+                    curField.parent().find('label').remove();
                 }
-                curBlock.find('.nd-form-input-list li.active').removeClass('active');
-                curBlock.find('.nd-form-input-list li').eq(curIndex).addClass('active');
-                curField.val(curBlock.find('.nd-form-input-list li').eq(curIndex).text());
-                curForm.find('input.required-address').prop('disabled', true);
-                curForm.find('input.required-address').parent().addClass('disabled');
-                curForm.find('.nd-form-submit .nd-btn').addClass('disabled');
-                curForm.find('.nd-form-connection-status-ok, .nd-form-connection-status-fail').hide();
-                curForm.find('.nd-form-connection-status-default').show();
                 break;
 
             case 40:
-                var curIndex = curBlock.find('.nd-form-input-list li').index(curBlock.find('.nd-form-input-list li.active'));
-                curIndex++;
-                if (curIndex > curBlock.find('.nd-form-input-list li').length - 1) {
-                    curIndex = 0;
+                if (curBlock.find('.nd-form-input-list').length > 0) {
+                    var curIndex = curBlock.find('.nd-form-input-list li').index(curBlock.find('.nd-form-input-list li.active'));
+                    curIndex++;
+                    if (curIndex > curBlock.find('.nd-form-input-list li').length - 1) {
+                        curIndex = 0;
+                    }
+                    curBlock.find('.nd-form-input-list li.active').removeClass('active');
+                    curBlock.find('.nd-form-input-list li').eq(curIndex).addClass('active');
+                    curField.val(curBlock.find('.nd-form-input-list li').eq(curIndex).text());
+                    curForm.find('input.required-address').prop('disabled', true);
+                    curForm.find('input.required-address').parent().addClass('disabled');
+                    curForm.find('.nd-form-submit .nd-btn').addClass('disabled');
+                    curForm.find('.nd-form-connection-status-ok, .nd-form-connection-status-fail').hide();
+                    curForm.find('.nd-form-connection-status-default').show();
+                    curField.removeClass('error').addClass('valid');
+                    curField.parent().find('label').remove();
                 }
-                curBlock.find('.nd-form-input-list li.active').removeClass('active');
-                curBlock.find('.nd-form-input-list li').eq(curIndex).addClass('active');
-                curField.val(curBlock.find('.nd-form-input-list li').eq(curIndex).text());
-                curForm.find('input.required-address').prop('disabled', true);
-                curForm.find('input.required-address').parent().addClass('disabled');
-                curForm.find('.nd-form-submit .nd-btn').addClass('disabled');
-                curForm.find('.nd-form-connection-status-ok, .nd-form-connection-status-fail').hide();
-                curForm.find('.nd-form-connection-status-default').show();
                 break;
 
             case 35:
@@ -411,10 +427,37 @@ function initForm(curForm) {
 
             case 13:
                 curField.trigger('blur');
+                curForm.find('input.required-address').prop('disabled', false);
+                curForm.find('input.required-address').parent().removeClass('disabled');
+                var urlcheck = $('.nd-form-connection-status-default').data('urlcheck');
+                if (typeof (urlcheck) != 'undefined') {
+                    $.ajax({
+                        type: 'POST',
+                        url: urlcheck,
+                        dataType: 'html',
+                        data: curForm.serialize(),
+                        cache: false
+                    }).done(function(html) {
+                        if (html == 'ok') {
+                            curForm.find('.nd-form-connection-status-default, .nd-form-connection-status-fail').hide();
+                            curForm.find('.nd-form-connection-status-ok').show();
+                        } else {
+                            curForm.find('.nd-form-connection-status-default, .nd-form-connection-status-ok').hide();
+                            curForm.find('.nd-form-connection-status-fail').show();
+                        }
+                    });
+                }
                 break;
 
             default:
                 curBlock.find('.nd-form-input-list li.active').removeClass('active');
+                curField.removeClass('valid').addClass('error');
+                if (curField.parent().find('label').length == 0) {
+                    curField.after('<label class="error"></label>');
+                }
+                if (curField.data('require-msg')) {
+                    curField.parent().find('label').html(curField.data('require-msg'));
+                }
                 curForm.find('input.required-address').prop('disabled', true);
                 curForm.find('input.required-address').parent().addClass('disabled');
                 curForm.find('.nd-form-submit .nd-btn').addClass('disabled');
@@ -436,8 +479,29 @@ function initForm(curForm) {
                         curBlock.append(newHTML);
                         curBlock.find('.nd-form-input-list li').click(function() {
                             curField.val($(this).html());
-                            curBlock.parents().filter('form').valid();
+                            curField.removeClass('error').addClass('valid');
+                            curField.parent().find('label').remove();
                             curBlock.find('.nd-form-input-list').remove();
+                            curForm.find('input.required-address').prop('disabled', false);
+                            curForm.find('input.required-address').parent().removeClass('disabled');
+                            var urlcheck = $('.nd-form-connection-status-default').data('urlcheck');
+                            if (typeof (urlcheck) != 'undefined') {
+                                $.ajax({
+                                    type: 'POST',
+                                    url: urlcheck,
+                                    dataType: 'html',
+                                    data: curForm.serialize(),
+                                    cache: false
+                                }).done(function(html) {
+                                    if (html == 'ok') {
+                                        curForm.find('.nd-form-connection-status-default, .nd-form-connection-status-fail').hide();
+                                        curForm.find('.nd-form-connection-status-ok').show();
+                                    } else {
+                                        curForm.find('.nd-form-connection-status-default, .nd-form-connection-status-ok').hide();
+                                        curForm.find('.nd-form-connection-status-fail').show();
+                                    }
+                                });
+                            }
                         });
                         curBlock.find('.nd-form-input-list li').mouseover(function() {
                             curBlock.find('.nd-form-input-list li.active').removeClass('active');

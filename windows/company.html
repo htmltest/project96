@@ -5,13 +5,13 @@
             <div class="nd-address-box-street">
                 <div class="nd-form-input">
                     <input type="text" style="display:none" />
-                    <input type="text" name="fieldID1" placeholder="Улица" class="required addressStreet" value="" autocomplete="false" data-msg="Выберите улицу" />
+                    <input type="text" name="fieldID1" placeholder="Улица" class="required addressStreet" value="" autocomplete="false" data-require-msg="Выберите улицу" />
                 </div>
             </div>
             <div class="nd-address-box-house">
                 <div class="nd-form-input">
                     <input type="text" style="display:none" />
-                    <input type="text" name="fieldID2" name="house" placeholder="Дом" class="required addressHome" value="" disabled="disabled" autocomplete="false" data-msg="Выберите дом" />
+                    <input type="text" name="fieldID2" name="house" placeholder="Дом" class="required addressHome" value="" disabled="disabled" autocomplete="false" data-require-msg="Выберите дом" />
                 </div>
             </div>
             <div class="nd-form-tip nd-form-connection-status-default" data-urlcheck="files/status-ok.html">Проверьте, подключен ли ваш дом к сети RiNet и отправьте заявку</div>
@@ -19,10 +19,10 @@
             <div class="nd-form-tip nd-form-connection-status-ok">Поздравляем, ваш дом подключен к RiNet! Выберите тариф и отправьте заявку.</div>
         </div>
         <div class="nd-form-input">
-            <input type="text" name="name" placeholder="Ваше имя" class="required required-address" value="" disabled="disabled" data-msg="Введите имя" />
+            <input type="text" name="name" placeholder="Ваше имя" class="required required-address" value="" disabled="disabled" data-require-msg="Введите имя" />
         </div>
         <div class="nd-form-input">
-            <input type="text" name="phone" placeholder="Телефонный номер" class="required maskPhone required-address" value="" disabled="disabled" />
+            <input type="text" name="phone" placeholder="Телефонный номер" class="required maskPhone required-address" value="" disabled="disabled" data-require-msg="Неверный формат номера телефона" />
         </div>
         <div class="nd-form-input">
             <input type="text" name="company" placeholder="Название организации" class="required-address" value="" disabled="disabled" />

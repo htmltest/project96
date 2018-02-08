@@ -2,13 +2,13 @@
     <form action="windows/thanks.html" method="post" class="nd-form nd-window-form">
         <div class="nd-form-title">Оставить отзыв</div>
         <div class="nd-form-input">
-            <input type="text" name="name" placeholder="Ваше имя" class="required" value="" />
+            <input type="text" name="name" placeholder="Ваше имя" class="required" value="" data-require-msg="Неверно заполнено поле" />
         </div>
         <div class="nd-form-input">
-            <input type="text" name="email" placeholder="Электронный адрес" class="required email" value="" />
+            <input type="text" name="email" placeholder="Электронный адрес" class="required email" value="" data-require-msg="Неверно заполнено поле" data-email-msg="Неверный формат почты" />
         </div>
         <div class="nd-form-input">
-            <input type="text" name="login" placeholder="Адрес подключения или логин" value="" />
+            <input type="text" name="login" placeholder="Адрес подключения или логин" value="" class="required" data-require-msg="Неверно заполнено поле" />
         </div>
         <div class="nd-form-input nd-form-input-2">
             <textarea type="textarea" name="message" rows="5" cols="10" placeholder="Текст отзыва"></textarea>
