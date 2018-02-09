@@ -192,13 +192,19 @@ function initForm(curForm) {
     curForm.find('input.addressStreet').on('blur', function(e) {
         var curField = $(this);
         if (curField.hasClass('required') && !curField.hasClass('valid')) {
-            curField.addClass('error');
+            curField.addClass('error').removeClass('valid');
             if (curField.parent().find('label').length == 0) {
                 curField.after('<label class="error"></label>');
             }
             if (curField.data('require-msg')) {
                 curField.parent().find('label').html(curField.data('require-msg'));
             }
+        }
+
+        if (curForm.find('input.required:not(.valid), textarea.required:not(.valid)').length == 0) {
+            curForm.find('.nd-form-submit .nd-btn').removeClass('disabled');
+        } else {
+            curForm.find('.nd-form-submit .nd-btn').addClass('disabled');
         }
         window.setTimeout(function() { curField.parent().find('.nd-form-input-list').remove()}, 500);
     });
@@ -331,6 +337,11 @@ function initForm(curForm) {
                             curBlock.find('.nd-form-input-list li').click(function() {
                                 curField.val($(this).html());
                                 curField.removeClass('error').addClass('valid');
+                                if (curForm.find('input.required:not(.valid), textarea.required:not(.valid)').length == 0) {
+                                    curForm.find('.nd-form-submit .nd-btn').removeClass('disabled');
+                                } else {
+                                    curForm.find('.nd-form-submit .nd-btn').addClass('disabled');
+                                }
                                 curField.parent().find('label').remove();
                                 curBlock.find('.nd-form-input-list').remove();
                                 curForm.find('input.addressHome').prop('disabled', false);
@@ -345,20 +356,32 @@ function initForm(curForm) {
                     });
                 }
                 break;
-       }
-       return false;
+        }
+
+        if (curForm.find('input.required:not(.valid), textarea.required:not(.valid)').length == 0) {
+            curForm.find('.nd-form-submit .nd-btn').removeClass('disabled');
+        } else {
+            curForm.find('.nd-form-submit .nd-btn').addClass('disabled');
+        }
+        return false;
     });
 
     curForm.find('input.addressHome').on('blur', function(e) {
         var curField = $(this);
         if (curField.hasClass('required') && !curField.hasClass('valid')) {
-            curField.addClass('error');
+            curField.addClass('error').removeClass('valid');
             if (curField.parent().find('label').length == 0) {
                 curField.after('<label class="error"></label>');
             }
             if (curField.data('require-msg')) {
                 curField.parent().find('label').html(curField.data('require-msg'));
             }
+        }
+
+        if (curForm.find('input.required:not(.valid), textarea.required:not(.valid)').length == 0) {
+            curForm.find('.nd-form-submit .nd-btn').removeClass('disabled');
+        } else {
+            curForm.find('.nd-form-submit .nd-btn').addClass('disabled');
         }
         window.setTimeout(function() { curField.parent().find('.nd-form-input-list').remove()}, 500);
     });
@@ -480,6 +503,11 @@ function initForm(curForm) {
                         curBlock.find('.nd-form-input-list li').click(function() {
                             curField.val($(this).html());
                             curField.removeClass('error').addClass('valid');
+                            if (curForm.find('input.required:not(.valid), textarea.required:not(.valid)').length == 0) {
+                                curForm.find('.nd-form-submit .nd-btn').removeClass('disabled');
+                            } else {
+                                curForm.find('.nd-form-submit .nd-btn').addClass('disabled');
+                            }
                             curField.parent().find('label').remove();
                             curBlock.find('.nd-form-input-list').remove();
                             curForm.find('input.required-address').prop('disabled', false);
@@ -510,8 +538,14 @@ function initForm(curForm) {
                     }
                 });
                 break;
-       }
-       return false;
+        }
+
+        if (curForm.find('input.required:not(.valid), textarea.required:not(.valid)').length == 0) {
+            curForm.find('.nd-form-submit .nd-btn').removeClass('disabled');
+        } else {
+            curForm.find('.nd-form-submit .nd-btn').addClass('disabled');
+        }
+        return false;
     });
 }
 
