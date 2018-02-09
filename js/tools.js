@@ -450,25 +450,27 @@ function initForm(curForm) {
 
             case 13:
                 curField.trigger('blur');
-                curForm.find('input.required-address').prop('disabled', false);
-                curForm.find('input.required-address').parent().removeClass('disabled');
-                var urlcheck = $('.nd-form-connection-status-default').data('urlcheck');
-                if (typeof (urlcheck) != 'undefined') {
-                    $.ajax({
-                        type: 'POST',
-                        url: urlcheck,
-                        dataType: 'html',
-                        data: curForm.serialize(),
-                        cache: false
-                    }).done(function(html) {
-                        if (html == 'ok') {
-                            curForm.find('.nd-form-connection-status-default, .nd-form-connection-status-fail').hide();
-                            curForm.find('.nd-form-connection-status-ok').show();
-                        } else {
-                            curForm.find('.nd-form-connection-status-default, .nd-form-connection-status-ok').hide();
-                            curForm.find('.nd-form-connection-status-fail').show();
-                        }
-                    });
+                if (curField.hasClass('valid')) {
+                    curForm.find('input.required-address').prop('disabled', false);
+                    curForm.find('input.required-address').parent().removeClass('disabled');
+                    var urlcheck = $('.nd-form-connection-status-default').data('urlcheck');
+                    if (typeof (urlcheck) != 'undefined') {
+                        $.ajax({
+                            type: 'POST',
+                            url: urlcheck,
+                            dataType: 'html',
+                            data: curForm.serialize(),
+                            cache: false
+                        }).done(function(html) {
+                            if (html == 'ok') {
+                                curForm.find('.nd-form-connection-status-default, .nd-form-connection-status-fail').hide();
+                                curForm.find('.nd-form-connection-status-ok').show();
+                            } else {
+                                curForm.find('.nd-form-connection-status-default, .nd-form-connection-status-ok').hide();
+                                curForm.find('.nd-form-connection-status-fail').show();
+                            }
+                        });
+                    }
                 }
                 break;
 
