@@ -209,6 +209,16 @@ function initForm(curForm) {
         window.setTimeout(function() { curField.parent().find('.nd-form-input-list').remove()}, 500);
     });
 
+    curForm.find('input.addressStreet').on('keydown', function(e) {
+        switch(e.keyCode) {
+            case 13:
+                return false;
+                break;
+            default:
+                break;
+        }
+    });
+
     curForm.find('input.addressStreet').on('keyup', function(e) {
         var curField = $(this);
         var curValue = curField.val();
@@ -364,6 +374,16 @@ function initForm(curForm) {
             curForm.find('.nd-form-submit .nd-btn').addClass('disabled');
         }
         return false;
+    });
+
+    curForm.find('input.addressHome').on('keydown', function(e) {
+        switch(e.keyCode) {
+            case 13:
+                return false;
+                break;
+            default:
+                break;
+        }
     });
 
     curForm.find('input.addressHome').on('blur', function(e) {
