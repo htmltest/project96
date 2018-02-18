@@ -73,6 +73,34 @@ $(document).ready(function() {
 });
 
 function initForm(curForm) {
+    curForm.find('input, textarea').each(function() {
+        var curField = $(this);
+        if (curField.attr('placeholder')) {
+            var curBlock = curField.parent();
+            curBlock.prepend('<div class="nd-form-input-label">' + curField.attr('placeholder') + '</div>');
+        }
+    });
+
+    curForm.find('input, textarea').on('keyup', function(e) {
+        if ($(this).val() != '') {
+            $(this).parent().addClass('nd-form-input-full');
+        } else {
+            $(this).parent().removeClass('nd-form-input-full');
+        }
+    });
+
+    curForm.find('input, textarea').on('blur', function(e) {
+        var curField = $(this);
+        if (curField.val() == '') {
+            curField.parent().removeClass('nd-form-input-full');
+        }
+        window.setTimeout(function() {
+            if (curField.val() == '') {
+                curField.parent().removeClass('nd-form-input-full');
+            }
+        }, 100);
+    });
+
     curForm.find('input.maskPhone').mask('+7 (999) 999-99-99');
 
     curForm.find('.nd-form-input input.required').parent().addClass('required');
@@ -469,6 +497,10 @@ function initForm(curForm) {
                 break;
 
             case 13:
+                if (curBlock.find('.nd-form-input-list li.active').length == 0) {
+                    curField.val('');
+                    curField.removeClass('valid');
+                }
                 curField.trigger('blur');
                 if (curField.hasClass('valid')) {
                     curForm.find('input.required-address').prop('disabled', false);
@@ -617,6 +649,7 @@ function windowOpen(linkWindow, dataWindow, callbackWindow) {
 
         $('.nd-window form').each(function() {
             initForm($(this));
+            $(this).find('input[type="text"]:visible:not(:disabled)').eq(0).trigger('focus');
         });
     });
 }
@@ -626,8 +659,8 @@ function windowPosition() {
         $('.nd-window-container').css({'left': '50%', 'margin-left': -$('.nd-window-container').width() / 2});
 
         $('.nd-window-container').css({'top': '50%', 'margin-top': -$('.nd-window-container').height() / 2, 'padding-bottom': 0});
-        if ($('.nd-window-container').height() > $('.nd-window').height() - 60) {
-            $('.nd-window-container').css({'top': '30px', 'margin-top': 0, 'padding-bottom': 30});
+        if ($('.nd-window-container').height() > $('.nd-window').height()) {
+            $('.nd-window-container').css({'top': 0, 'margin-top': 0, 'padding-bottom': 0});
         }
     }
 }
