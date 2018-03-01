@@ -30,9 +30,9 @@ p {margin:20px 0; padding:0}
     .nd-form-input.required:after {top:12px}
 }
 
-.nd-form-input-label {display:none; position:absolute; left:0; top:0; top:13px; left:15px; font:500 13px ChevinPro, sans-serif; color:#999}
+.nd-form-input-label {opacity:0; position:absolute; left:0; top:0; top:19px; left:15px; font:500 16px ChevinPro, sans-serif; color:#747474; transition:top .3s, font-size .3s}
 @media screen and (max-width:599px) {
-    .nd-form-input-full .nd-form-input-label {display:block}
+    .nd-form-input-full .nd-form-input-label {opacity:1; top:13px; font-size:13px}
 }
 
 .nd-form-input input,
